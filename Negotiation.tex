@@ -1,0 +1,92 @@
+\documentclass[10pt]{report}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\lhead{CAPTools Documentation}
+\rhead{KU System-Level Design Group}
+\lfoot{\copyright The University of Kansas, 2019}
+\cfoot{\thepage}
+
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{obligation}{Obligation}
+\newtheorem{definition}{Definition}
+
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{ifthen}
+% \newboolean{submission}  %%set to true for the submission version
+
+\newcommand{\squash}{\itemsep=0pt\parskip=0pt}
+
+\parskip=\medskipamount
+\parindent=0pt
+
+\bibliographystyle{abbrvnat}
+
+\begin{document}
+
+\title{Certified Attestation Protocol Tools - Version 0.1}
+\author{Anna Fritz \\
+  Information and Telecommunication Technology Center \\
+  The University of Kansas \\
+  \url{arfritzz@ku.edu}
+}
+
+\section {Inital Overview}
+
+  Negotiation occurs between two parties: the appraiser and the target. 
+  The appraiser sends the target a \textbf{request}. The target then responds
+  with a \textbf{proposal} which is a set of \textbf{protocols}.
+
+\section {Request}
+
+\subsection {Certificate Authority}
+  
+  As part of ISAKMP, a certificate authority is needed for strong 
+  authentication of a communicating peer (ie the appraiser and the
+  target). 
+
+\subsection {Request Composition}
+  
+  The request will be composed of ________. 
+
+\section {Proposal}
+
+\subsection {Producing a proposal}
+
+  The function, ($\gamma_{n}$), selects a protocol (P_{k}) from a proposal
+  $\langle p_0,p_1,\ldots,p_n\rangle$. In other words, there must be some
+  way to take the request and generate a protocol. 
+   
+\section {Selecting Proposal}
+
+\section {Evaluating Propsal}
+
+\section {Questions:}
+\begin{enumerate}
+  \item What does the certificate authority get us? A secure channel but 
+        does it say anything about the appraiser or target's
+        privacy policy?
+  \item How does the request generate a proposal? 
+  \begin{itemize}
+    \item Could think of a request as a condition like all even numbers.
+    \item Then Proposal consists of many different sets composed of even
+          and odd numbers with each set having varying amounts of numbers.
+    \item Then what filters the set to include only even numbers?
+          Is that $\delta_c$?
+    \item $\delta_c$ is a functor that transforms proposals into evidence.
+          I dont really understand this at all.  
+  \end{itemize}
+  \item Is the targets response, the proposal, an ordered list?
+        I think we need a function to ensure ordering.
+\end{document}
+
+\maketitle
+
+\todototoc\listoftodos
+\listoffigures
+\listoftables
