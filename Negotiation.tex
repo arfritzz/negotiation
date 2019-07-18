@@ -43,6 +43,55 @@
   The appraiser sends the target a \textbf{request}. The target then responds
   with a \textbf{proposal} which is a set of \textbf{protocols}.
 
+\section {Basics}
+
+To begin constructing the language, there are basic things we must implement. 
+
+\begin{itemize}
+\item Place
+	\begin{itemize}
+	\squash
+	\item Necessary to understand where the Negotiation is taking place.
+	\item Maybe place will be specialized for both the appraiser and the target but that is a question for later
+	\item For now, place is a natural number that represents where the Negotiation is occurring.  
+	\end{itemize}
+\item Term
+	\begin{itemize}
+	\squash
+	\item A term is a Copland term. 
+	\item This is useful for the Privacy Policy to decide what terms can be shared. 
+	\item A Proposal will be composed of a list of terms from the target to the appraiser.
+	\item I suppose when we go to define an ordering to establish a meet and join we will order the terms. This seems like a natural place to establish ordering. 
+	\end{itemize}
+\item Request
+	\begin{itemize}
+	\item A request asks the target for evidence. 
+	\item It can ask for one thing, one thing or the other thing, or both things. 
+	\item Request is an Inductive definition then so that the constructors can be `one` `prod` `sum`.
+	\end{itemize}
+\item Proposal
+	\begin{itemize}
+	\item Proposal is a definition (function) which takes a request and generates a list of terms
+	\item Somewhere somehow the privacy policy must be satisfied. 
+	\item Dr. A suggest making a theorem that says "forall protocols, the privacy policy is satisfied"
+	\item This leads me to ask "How do we dine the privacy policy in terms of code?"
+	\end{itemize}
+
+\end{itemize}
+
+Knowing these pieces are needed, an initial step by step procedure can be composed.
+\begin{enumerate}
+\item A Request is generated from the appraiser and sent to the target
+	\begin{itemize}
+	
+	\end{itemize}
+\item The target looks at the proposal and 
+\end{enumerate} 
+
+\section {Privacy Policy}
+
+At this point, the privacy policy is some large, overarching being that controls the data that is sent back and forth between the appraiser and the target. Both the appraiser and the target have their own, unique privacy policies. Also, in more general terms, each computer or cluster must have a privacy policy as a target and as an appraiser so that it can morph between the two roles. 
+
 \section {Request}
 
 \subsection {Certificate Authority}
@@ -99,6 +148,12 @@
   
 \section {Evaluating Proposal}
 
+Evaluating a proposal will occur in the Attestation Monad. The job of Negotiation is simply to choose a protocol that will be evaluated. 
+
+\section {How ISAKMP fits} 
+
+In general, ISAKMP is the protocol that establishes Security Associations (SA) and cryptographic keys.It allows an entity's initial communications to indicate which certificate authorities (CAs) it supports.   
+
 \section {Questions:}
 \begin{enumerate}
   \item What does the certificate authority get us? A secure channel but 
@@ -129,11 +184,8 @@ Let Fruit be a set such that Fruit = { apple , orange , pear }. Then an inductiv
 \begin{verbatim}
 
 Inductive request : Type := 
- 
  | one n -> fruit
-
  | prod fruit -> fruit -> fruit
-
  | sum fruit -> fruit -> fruit.
 \end{verbatim}
 
@@ -155,11 +207,8 @@ Then, generalizing this to all data type we consider the problem of wanting to u
 
 \begin{verbatim}
 Inductive request (ev : Type) : Type :=
-
 | one n -> ev
-
 | prod ev -> ev -> ev
-
 | sum ev -> ev -> ev
 
 \end{verbatim}
