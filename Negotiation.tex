@@ -17,7 +17,7 @@
 \newtheorem{definition}{Definition}
 
 \usepackage[textsize=tiny]{todonotes}
-\usepackage{ifthen}
+%%\usepackage{ifthen}
 % \newboolean{submission}  %%set to true for the submission version
 
 \newcommand{\squash}{\itemsep=0pt\parskip=0pt}
@@ -39,7 +39,7 @@
 
 \section {Initial Overview}
 
-  Negotiation occurs between two parties: the appraiser and the target. 
+  Negotiation occurs between two parties: the appraiser and the target. The goal is to gather evidence about a target.
   The appraiser sends the target a \textbf{request}. The target then responds
   with a \textbf{proposal} which is a set of \textbf{protocols}.
 
@@ -74,7 +74,7 @@ To begin constructing the language, there are basic things we must implement.
 	\item Proposal is a definition (function) which takes a request and generates a list of terms
 	\item Somewhere somehow the privacy policy must be satisfied. 
 	\item Dr. A suggest making a theorem that says "forall protocols, the privacy policy is satisfied"
-	\item This leads me to ask "How do we dine the privacy policy in terms of code?"
+	\item This leads me to ask "How do we write the privacy policy in terms of code?"
 	\end{itemize}
 
 \end{itemize}
@@ -88,9 +88,43 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
 \item The target looks at the proposal and 
 \end{enumerate} 
 
+\begin{figure}[hbtp]
+  \centering
+  \input{basecase_fig.tex}
+  \caption[Attestation and Appraisal Sequence for One Request]{Processing sequence for
+    Negotiation, Selection, Attestation and Appraisal during remote
+    attestation.}
+  \label{fig:att-app-seq}
+\end{figure}
+
 \section {Privacy Policy}
 
 At this point, the privacy policy is some large, overarching being that controls the data that is sent back and forth between the appraiser and the target. Both the appraiser and the target have their own, unique privacy policies. Also, in more general terms, each computer or cluster must have a privacy policy as a target and as an appraiser so that it can morph between the two roles. 
+
+\section {Ideal trust establishment function}
+
+The ideal trust establishment $\delta_m:R\rightarrow
+(E,\preceq,\top,\bot)$ or delta_m. 
+
+$\delta_m$ relates a request to the set of all evidence packages that 
+could result from that request.  Those evidence packages are ordered
+by $\preceq$ that defines relative``quality'' of evidence.  If
+$e_1\preceq e_2$ then evidence $e_2$ is of higher quality than $e_1$.
+Quality is subjective and this order reflects situational awareness.
+The relation $\preceq$ is by definition a partial order 
+over evidence while $\bot$ and $\top$ are the worst and best evidence
+corresponding to no description and an exact description
+respectively.  This defines a bounded lattice, however more work is
+needed to establish the correctness of the approach.
+
+$\gamma_n$ produces a proposal $\langle p_0,p_1,\ldots,p_n\rangle$
+from a request, $r$ based on target policy.\todo{Consider defining
+  $\gamma_n$ as a relation and the proposal as the vector of protocols
+  for some $r$ as the set of protocols related to $r$.}  $\delta_c$
+transforms the proposal into evidence from each protocol,
+$\langle e_1,e_2,\ldots,e_n \rangle$. Thus $\delta_c$ is a functor
+over proposals---vectors of protocols---to vectors of evidence.
+$\alpha_n$ lifts the evidence vector into the evidence lattice.
 
 \section {Request}
 
@@ -105,9 +139,16 @@ At this point, the privacy policy is some large, overarching being that controls
   Right now the exact understanding of the Request is not important.
   Only a general understanding in needed and useful. 
   
-  A request is composed of some sort of evidence. It can be three things, either evidence, a sum of evidence, or a product of evidence. However, sum and product are the mathematical definitions were sum equates to either (the boolean or) and product equates to both (the boolean and). 
+  A request is composed of some sort of evidence. It can be three things:
+  \begin{enumerate}
+  \squash
+  \item one evidence
+  \item sum of evidence (OR)
+  \item product of evidence (AND)
+  \end{enumerate}
+
   
-  At this point, there really is not much else that is needed for a Request; all that is needed is evidence. In the future, some things that should be considered in the request is:
+  At this point, there really is not much else that is needed for a Request; all that is needed is evidence. In the future, some things that should be considered in the request are:
   
   \begin{itemize}
    \squash
@@ -126,7 +167,15 @@ At this point, the privacy policy is some large, overarching being that controls
   Definition propose : (request ev) -> list term
   \end{verbatim}  
   
-  In this definition, the appraiser receives a list of terms. The list of terms must satisfy the privacy policy for the target before being sent to the appraiser. 
+  In this definition, the appraiser receives a list of terms. The list of terms must satisfy the privacy policy for the target before being sent to the appraiser. In the future, some things that should be considered in the proposal are:
+  
+  \begin{itemize}
+   \squash
+   \item the target's privacy policy
+   \item ISAKMP
+  \end{itemize}
+  
+	I believe that in the proposal, the meet and join should be established. This will make the function of selection a protocol for evaluation easier if the set returned to the target is already ordered. 
 
 \section {Selecting Proposal}
 
