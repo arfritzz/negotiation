@@ -83,7 +83,7 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
 \begin{enumerate}
 \item A Request is generated from the appraiser and sent to the target
 	\begin{itemize}
-	
+	\item Request now only composed of one thing.
 	\end{itemize}
 \item The target looks at the proposal and 
 \end{enumerate} 
@@ -118,9 +118,7 @@ respectively.  This defines a bounded lattice, however more work is
 needed to establish the correctness of the approach.
 
 $\gamma_n$ produces a proposal $\langle p_0,p_1,\ldots,p_n\rangle$
-from a request, $r$ based on target policy.\todo{Consider defining
-  $\gamma_n$ as a relation and the proposal as the vector of protocols
-  for some $r$ as the set of protocols related to $r$.}  $\delta_c$
+from a request, $r$ based on target policy. $\delta_c$
 transforms the proposal into evidence from each protocol,
 $\langle e_1,e_2,\ldots,e_n \rangle$. Thus $\delta_c$ is a functor
 over proposals---vectors of protocols---to vectors of evidence.
