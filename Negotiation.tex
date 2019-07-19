@@ -173,7 +173,7 @@ $\alpha_n$ lifts the evidence vector into the evidence lattice.
    \item ISAKMP
   \end{itemize}
   
-	I believe that in the proposal, the meet and join should be established. This will make the function of selection a protocol for evaluation easier if the set returned to the target is already ordered. 
+	The proposal can be ordered or unordered, it does not really matter. The appraiser decides the ordering so the appraiser orders the set before selection.  
 
 \section {Selecting Proposal}
 
@@ -191,8 +191,10 @@ $\alpha_n$ lifts the evidence vector into the evidence lattice.
   . where one can list various options for negotiation. 
   \end{verbatim} 
   
-  
-  
+  	The selection of a proposal has been greatly discussed. The appraiser will always select the proposal, but how? There must be some type of ordering on the members of the set that established a notion of "best." This is how a lattice comes into play. Within a lattice, the is some sort of ordering. Therefore, each unique system will produce its own notion of ordering allowing for there to then be a best and worst protocol in each set. 
+	
+	The lattice definition is tricky because we cannot list out cases as seen in the example because each system is different. Instead, we must keep it more general. 
+
 \section {Evaluating Proposal}
 
 Evaluating a proposal will occur in the Attestation Monad. The job of Negotiation is simply to choose a protocol that will be evaluated. 
