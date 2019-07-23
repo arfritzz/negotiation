@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[10pt]{report}
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 \usepackage{natbib}
@@ -36,6 +36,8 @@
 }
 
 \begin{document}
+
+\chapter {Design}
 
 \section {Initial Overview}
 
@@ -271,6 +273,42 @@ Inductive request (ev : Type) : Type :=
 | sum ev -> ev -> ev
 
 \end{verbatim}
+
+
+\chapter {Verification}
+
+Before constructing the Negotiation procedure, formal verification must occur to ensure the process achieves the desired results. The outline of formal system verification can be seen below. 
+
+\begin{enumerate}
+\item A request is sent
+\item Negotiation generates a set of protocols, a proposal.
+\item The proposal is selected 
+\item The interpreter runs, hardware is generated which turns to bits which is extracted to evidence.
+\item The evidence is "unselected" so that if every protocol proposed by Negotiation were to be turned to evidence, the results would be the same. 
+\item The list of evidence is then appraised to form a lattice. 
+\end{enumerate}
+
+In deciding ordering for the lattice, the following will occur.
+
+\begin{enumerate}
+\item A request is sent.
+\item A proposal is generated.
+\item A protocol is selected.
+\item That protocol generates evidence. 
+\item That evidence is characterized as "best."
+\item The other protocols are interpreted to generate evidence. 
+\item There is now an "best" protocol because the resulting evidence was best. 
+\end{enumerate}
+
+\begin{figure}[hbtp]
+  \centering
+  \input{certification-fig.tex}
+  \caption[Certification Figure]{Certification stack showing
+    certification dependencies and execution path. Solid lines
+    represent implementations while dashed lines represent
+    mathematical definitions.}
+  \label{fig:certification-fig}
+\end{figure}
 
 \end{document}
 
