@@ -76,6 +76,12 @@ To begin constructing the language, there are basic things we must implement.
 	\item Dr. A suggest making a theorem that says "forall protocols, the privacy policy is satisfied"
 	\item This leads me to ask "How do we write the privacy policy in terms of code?"
 	\end{itemize}
+\item What that Appraiser is willing to accept?
+	\begin{itemize}
+	\item The target might not respond with exactly what the appraiser had asked for. What is the procedure in that case?
+	\item Do we accept other things? Or only what is specifically asked for?
+	\item Somewhere their might be a flag that states if ONLY exact is acceptable but otherwise, the appraiser must list what is acceptable. 
+	\end{itemize}
 
 \end{itemize}
 
@@ -85,7 +91,9 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
 	\begin{itemize}
 	\item Request now only composed of one thing.
 	\end{itemize}
-\item The target looks at the proposal and 
+\item The target looks at the request and responds with the proposal. The proposal is a list of protocols. 
+\item The appraiser selects a protocol.
+\item The protocol is sent to the Attestation Manager.  
 \end{enumerate} 
 
 \begin{figure}[hbtp]
@@ -100,6 +108,8 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
 \section {Privacy Policy}
 
 At this point, the privacy policy is some large, overarching being that controls the data that is sent back and forth between the appraiser and the target. Both the appraiser and the target have their own, unique privacy policies. Also, in more general terms, each computer or cluster must have a privacy policy as a target and as an appraiser so that it can morph between the two roles. 
+
+Who communication will occur between, be it a network of computers or one single computer, will be established in the Security Association. Once that is established, the privacy policy may change to reflect the communication. 
 
 \section {Ideal trust establishment function}
 
