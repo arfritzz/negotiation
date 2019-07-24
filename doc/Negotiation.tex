@@ -115,8 +115,7 @@ Who communication will occur between, be it a network of computers or one single
 
 \section {Ideal trust establishment function}
 
-The ideal trust establishment $\delta_m:R\rightarrow
-(E,\preceq,\top,\bot)$ or delta_m. 
+The ideal trust establishment $\delta_m:R\rightarrow (E,\preceq,\top,\bot)$ , or delta_m. 
 
 $\delta_m$ relates a request to the set of all evidence packages that 
 could result from that request.  Those evidence packages are ordered
@@ -277,28 +276,28 @@ Inductive request (ev : Type) : Type :=
 
 \chapter {Verification}
 
-Before constructing the Negotiation procedure, formal verification must occur to ensure the process achieves the desired results. The outline of formal system verification can be seen below. 
+Before constructing the negotiation procedure, formal verification must occur to ensure the process achieves the desired results. That is, that the Target and the Appraiser's privacy policy is met and that the negotiation policy produces an acceptable protocol for attestation. For negotiation, the architecture design follows a specific procedure that differs from the systems verification procedure. This is because the implementation of negotiation will differ from the verification of negotiation. The procedure for the system's implementation can be seen in the following list below. 
 
 \begin{enumerate}
-\item A request is sent
-\item Negotiation generates a set of protocols, a proposal.
-\item The proposal is selected 
-\item The interpreter runs, hardware is generated which turns to bits which is extracted to evidence.
-\item The evidence is "unselected" so that if every protocol proposed by Negotiation were to be turned to evidence, the results would be the same. 
-\item The list of evidence is then appraised to form a lattice. 
+\item A request is sent by the Appraiser to the Target. 
+\item The Target receives the request and generates a set of protocols also known as a proposal. Each protocol must satisfy the Target's privacy policy. 
+\item The proposal is sent from the Target to the Appraiser.  
+\item The Appraiser orders the set of protocols and chooses the "best" protocol.
+\item The Appraiser sends the "best" protocol through attestation where the protocol generates evidence about the system. 
 \end{enumerate}
 
-In deciding ordering for the lattice, the following will occur.
+Before the architecture is enforced, there must be formal verification of the negotiation system. This ensures the procedure is sound and complete. More importantly, through verification, a notion of "best" protocol is able to be developed and understood. The verification diagram, as seen below, details the entire system certification from negotiation through attestation. However, the concern here is with verification of the negotiation procedure. The following steps, as outlined below, detail how verification of negotiation will be accomplished.  
 
 \begin{enumerate}
-\item A request is sent.
-\item A proposal is generated.
-\item A protocol is selected.
-\item That protocol generates evidence. 
-\item That evidence is characterized as "best."
-\item The other protocols are interpreted to generate evidence. 
-\item There is now an "best" protocol because the resulting evidence was best. 
+\item A request is sent by Appraiser to the Target.
+\item The Target generates a proposal which is a set of protocols.
+\item All generated protocols in the set are evaluated, through attestation, to evidence. 
+\item The resulting set of evidence is then ordered where "best" is the evidence that is the most descriptive of the system and "worst" is the least descriptive evidence. 
+\item The resulting lattice of evidence is then mapped back to the original set of protocols. 
+\item The origianl set of protocols, known as the proposal, now has an ordering with the "best" protocol generating the most descriptive piece of evidence.
 \end{enumerate}
+
+This verification procedure can then be completed multiple times to gain a complete understanding of the system and possible negotiation situations. In the end, a look-up table will be developed that is composed of the possible protocols and their ordering. 
 
 \begin{figure}[hbtp]
   \centering
