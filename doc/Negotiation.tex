@@ -208,7 +208,7 @@ $\alpha_n$ lifts the evidence vector into the evidence lattice.
 
 \section {Evaluating Proposal}
 
-Evaluating a proposal will occur in the Attestation Monad. The job of Negotiation is simply to choose a protocol that will be evaluated. 
+Evaluating a proposal will occur in the Attestation Monad. The job of Negotiation is simply to choose a protocol that will be evaluated. It is important to note, however, the result of evaluating a proposal is evidence about the system.  
 
 \section {How ISAKMP fits} 
 
@@ -276,13 +276,15 @@ Inductive request (ev : Type) : Type :=
 
 \chapter {Verification}
 
+\section {Introduction to the formal Verification of Negotiation}
+
 Before constructing the negotiation procedure, formal verification must occur to ensure the process achieves the desired results. That is, that the Target and the Appraiser's privacy policy is met and that the negotiation policy produces an acceptable protocol for attestation. For negotiation, the architecture design follows a specific procedure that differs from the systems verification procedure. This is because the implementation of negotiation will differ from the verification of negotiation. The procedure for the system's implementation can be seen in the following list below. 
 
 \begin{enumerate}
-\item A request is sent by the Appraiser to the Target. 
-\item The Target receives the request and generates a set of protocols also known as a proposal. Each protocol must satisfy the Target's privacy policy. 
+\item A request is sent by the Appraiser to the Target. The request must not violate the Appraiser's privacy policy. More detailed information about the Request can be found in the earilier section. 
+\item The Target receives the request and generates a set of protocols also known as a proposal. Each protocol must satisfy the Target's privacy policy for each Request. 
 \item The proposal is sent from the Target to the Appraiser.  
-\item The Appraiser orders the set of protocols and chooses the "best" protocol.
+\item The Appraiser orders the set of protocols and chooses the "best" protocol. Multi-step negotiation may also occur but that will be discussed later. 
 \item The Appraiser sends the "best" protocol through attestation where the protocol generates evidence about the system. 
 \end{enumerate}
 
@@ -308,6 +310,8 @@ This verification procedure can then be completed multiple times to gain a compl
     mathematical definitions.}
   \label{fig:certification-fig}
 \end{figure}
+
+\section {Evidence}
 
 \end{document}
 
