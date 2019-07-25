@@ -288,6 +288,16 @@ Before constructing the negotiation procedure, formal verification must occur to
 \item The Appraiser sends the "best" protocol through attestation where the protocol generates evidence about the system. 
 \end{enumerate}
 
+\begin{figure}[hbtp]
+  \centering
+  \input{certification-fig.tex}
+  \caption[Certification Figure]{Certification stack showing
+    certification dependencies and execution path. Solid lines
+    represent implementations while dashed lines represent
+    mathematical definitions.}
+  \label{fig:certification-fig}
+\end{figure}
+
 Before the architecture is enforced, there must be formal verification of the negotiation system. This ensures the procedure is sound and complete. More importantly, through verification, a notion of "best" protocol is able to be developed and understood. The verification diagram, as seen below, details the entire system certification from negotiation through attestation. However, the concern here is with verification of the negotiation procedure. The following steps, as outlined below, detail how verification of negotiation will be accomplished.  
 
 \begin{enumerate}
@@ -303,11 +313,10 @@ This verification procedure can then be completed multiple times to gain a compl
 
 \begin{figure}[hbtp]
   \centering
-  \input{certification-fig.tex}
-  \caption[Certification Figure]{Certification stack showing
-    certification dependencies and execution path. Solid lines
+  \input{relational-diagram.tex}
+  \caption[Relational Figure]{ Relational diagram revealing the request, evidence, and protocols. The relation between  Solid lines
     represent implementations while dashed lines represent
-    mathematical definitions.}
+    mathematical relations.}
   \label{fig:certification-fig}
 \end{figure}
 
