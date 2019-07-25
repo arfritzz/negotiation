@@ -3,23 +3,27 @@
     font=\sffamily,minimum height=2mm,minimum width=2mm}]
 
 
-  \node[main node] (RQ) {Request (R)};
-  \node[main node] (SA) [below of=RQ] {$\langle p_0,\ldots,p_n\rangle$};
-  \node[main node] (NM) [below of=SA] {$\langle p_k\rangle$};
-  \node[main node] (NME) [node distance=3.5cm, right of=NM] {AM};
-  \node[main node] (SAE) [node distance=3.5cm, right of=SA] {$\langle p_0,p_1,\ldots,p_n\rangle$};  
-  \node[main node] (RQE) [node distance=3.5cm, right of=RQ] {R};  
-  \node[main node] (IN) [node distance=1.0cm, above of=RQ] {Appraiser};
-  \node[main node] (OUT) [node distance=1.0cm, above of=RQE] {Target};
+  \node[main node] (Request) {Request (R)};
+  \node[main node] (AppPrivPol) [below of=Request] {R};
+  \node[main node] (R) [node distance=3.5cm, right of=AppPrivPol] {R}; 
+  \node[main node] (TarPrivPol) [below of=R] {$\langle p_0,p_1,\ldots,p_n\rangle$}; 
+  \node[main node] (TarProp) [below of=TarPrivPol] {$\langle p_0,p_1,\ldots,p_n\rangle$};  
+  \node[main node] (AppProp) [node distance=3.5cm, left of=TarProp] {$\langle p_0,\ldots,p_n\rangle$};
+  \node[main node] (Protocol) [below of=AppProp] {$\langle p_k\rangle$};
+  \node[main node] (AM) [node distance=3.5cm, right of=Protocol] {AM}; 
+  \node[main node] (IN) [node distance=1.0cm, above of=Request] {Appraiser};
+  \node[main node] (OUT) [node distance=3.5cm, right of=IN] {Target};
     
 
   \path[every node/.style={font=\sffamily\small, fill=white,inner sep=1pt}]
-    (RQ) edge node[above=1mm] {} (RQE)
-    (SAE) edge node[above=1mm] {} (SA)
-    (NM) edge node[above=1mm] {} (NME)
-    (RQE) edge node[right=1mm] {Proposal Generation} (SAE)
-    (SA) edge node[left=1mm] {Protocol Selection} (NM)
-    ;
+    (Request) edge node[left=1mm] {Satisfy Privacy Policy} (AppPrivPol)
+    (AppPrivPol) edge node[left=1mm] {} (R)
+    (R) edge node[right=1mm] {Proposal Generation} (TarPrivPol)
+    (TarPrivPol) edge node[right=1mm] {Satisfy Privacy Policy} (TarProp)
+    (TarProp) edge node[right=1mm] {} (AppProp)
+    (AppProp) edge node[left=1mm] {Protocol Selection} (Protocol)
+    (Protocol) edge node[right=1mm] {} (AM)	
+	;
 \end{tikzpicture}
 
 %%% Local Variables: 
