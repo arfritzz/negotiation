@@ -10,33 +10,47 @@
 
 \section {Rules used to model the Alice/Bob situation}
 
+Alice and Bob are sharing secrets. Alice has two secrets and
+Bob can choose one or the other, but not both. Alice cannot 
+alter the secrets based on Bob's decision.
+
+
 \textbf {Attacker Rules}
 
- One must first assume protocols are executed in the presence
+\begin{itemize}
+ 
+One must first assume protocols are executed in the presence
 of an attacker. This attacker can intercept all messages,
 compute new messages from the messages it has recieved,
 and send any message it can build.
 
+\end{itemize}
+
 \textbf {TPM Rules}
 
-CertifyKey - command that allows one to obtain a certificate
+\begin{itemize}
+
+\item CertifyKey - command that allows one to obtain a certificate
 on a key that is stored in teh device. 
 
-Unbind -- command allows one to retieve the contents of an
+\item Unbind -- command allows one to retieve the contents of an
 encryption provided that the decryption key is stored in 
 the key table of the TPM. This can only be executed if the 
 PCR's current value is the one specified in the key table.
 
-Extend -- If the attacker is able to extend teh PCR with value
+\item Extend -- If the attacker is able to extend teh PCR with value
 in the state and the attacker knows some term in the state then
 the attacker still knows that term after having extended
 the PCR. Also, the key table is maintained after when the 
 PCR is extended.
 
-\textbf {Protocol Rules}
+\end{itemize}
 
+\textbf {Protocol Rules}
+\begin{itemize}
 If the attacker can provide a certificate of a key bound to 
 the PCR value then Alice will encrypt the first secret using 
 this key. The second rule is similar for the second secret.
+\end{itemize}
 
 \end{document}
