@@ -37,6 +37,14 @@
 
 \begin{document}
 
+\chapter {Current Focus}
+
+\section {}
+
+Understanding the shape of evidence so that I can understand
+the results of evaluating protocols to understand what 
+would be the best evidence. 
+
 \chapter {Design}
 
 \section {Initial Overview}
@@ -44,7 +52,14 @@
 Negotiation occurs between two parties: the appraiser and the target.
 The goal is to gather evidence about a target. The appraiser sends the
 target a \textbf{request}. The target then responds
-with a \textbf{proposal} which is a set of \textbf{protocols}.
+with a \textbf{proposal} which is a set of \textbf{protocols}. The goal of
+negotiation is then to select the "best" protocol. However, in order to
+choose the "best" from the set, there must be some notion of ordering.
+Typically, the best protocol would be the one that relays the most 
+information about a system. Therefore, these protocols must all be evaluated
+to evidence, then ordered, then the initial protocols can be ordered. 
+In turn, an ordering over protocols will be discovered when all 
+protocols are evaluated to evidence.  
 
 \section {Basics}
 
@@ -442,6 +457,10 @@ involves the hardware implementations.
 Overall, the goal of Copland, and the precursor of negotiation is preforming
 layered attestations.  The result of the layered attestation is to provide
 an appraiser with evidence about the integrity of a target. 
+
+\subsection {The Shape of Evidence}
+
+
 
 \end{document}
 
