@@ -1,0 +1,42 @@
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Notes on Formal Analysis of Protocols based on TPM State Registers}
+\author{arfritz97 }
+\date{August 2019}
+
+\begin{document}
+
+\section {Rules used to model the Alice/Bob situation}
+
+\textbf {Attacker Rules}
+
+One must first assume protocols are executed in the presence
+of an attacker. This attacker can intercept all messages,
+compute new messages from the messages it has recieved,
+and send any message it can build.
+
+\textbf {TPM Rules}
+
+CertifyKey -> command that allows one to obtain a certificate
+on a key that is stored in teh device. 
+
+Unbind -> command allows one to retieve the contents of an
+encryption provided that the decryption key is stored in 
+the key table of the TPM. This can only be executed if the 
+PCR's current value is the one specified in the key table.
+
+Extend -> If the attacker is able to extend teh PCR with value
+in the state and the attacker knows some term in the state then
+the attacker still knows that term after having extended
+the PCR. Also, the key table is maintained after when the 
+PCR is extended.
+
+\textbf {Protocol Rules}
+
+If the attacker can provide a certificate of a key bound to 
+the PCR value then Alice will encrypt the first secret using 
+this key. The second rule is similar for the second secret.
+
+\end{document}
