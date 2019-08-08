@@ -7,7 +7,24 @@
 
 \begin{document}
 
+\textbf {Limitations of Measurement}
 
-Complex Numbers
+Measurement cannot prevent corruption; at best it can only detect corruption.
+
+\textbf {Strategy for measurement}
+
+The trust system should be based on a bottom up chain of measurement. The "recent or deep" theorem validates this. The theorem states "If a system has measured deeper components before more shallow ones, then the only way for an adversary to corrupt a component t without detection is either by recently corrupting one of t's dependencies, or else by corrupting a component even deeper in the system. 
+
+\textbf {Bundling evidence}
+
+The order of measurement is important so the result of attestation must convey order. 
+
+Problem: Structure of TPM quote does not always reflect ordering information, especially if some of the components depositing measurement values might be dynamically corrupted. 
+
+Thus, the following bundling theorem, Theorem 3, states: "If the system satisfies certain assumptions, and the TPM quote formed according to our bundling strategy indicates no corruptions, then either the measurements were really taken bottom-up, or the adversary recently corrupted one of t's dependencies, or else the adversary corrupted an even deeper component. 
+
+\section {Example}
+
+Consider an enterprise that would like to ensure that systems connecting to its network provide a fresh system scan by the most up-to-date virus checker. Suppose all systems have A1, a component capable of accurately reporting the running version of the virus checker, and A2, a component capable of measuring the runtime state of the kernel. Assume A1 and A2 are both measured by roots of trust (rtm) as part of secure boot. The system then contains {sys, vc, ker, A1, A2, rtm} where sys represents the parts of the system, vc represents the virus checker, and ker represents the kernel. 
 
 \end{document}
