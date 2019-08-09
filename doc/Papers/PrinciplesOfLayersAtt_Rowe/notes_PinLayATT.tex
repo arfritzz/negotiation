@@ -15,13 +15,21 @@ Measurement cannot prevent corruption; at best it can only detect corruption.
 
 The trust system should be based on a bottom up chain of measurement. The "recent or deep" theorem validates this. The theorem states "If a system has measured deeper components before more shallow ones, then the only way for an adversary to corrupt a component t without detection is either by recently corrupting one of t's dependencies, or else by corrupting a component even deeper in the system. 
 
-\textbf {Bundling evidence}
+\Textbf {Bundling evidence}
 
 The order of measurement is important so the result of attestation must convey order. 
 
 Problem: Structure of TPM quote does not always reflect ordering information, especially if some of the components depositing measurement values might be dynamically corrupted. 
 
-Thus, the following bundling theorem, Theorem 3, states: "If the system satisfies certain assumptions, and the TPM quote formed according to our bundling strategy indicates no corruptions, then either the measurements were really taken bottom-up, or the adversary recently corrupted one of t's dependencies, or else the adversary corrupted an even deeper component. 
+Thus, the following bundling theorem, Theorem 3, states: "If the system satisfies certain assumptions, and the TPM quote formed according to our bundling strategy indicates no corruptions, then either the measurements were really taken bottom-up, or the adversary recently corrupted one of t's dependencies, or else the adversary corrupted an even deeper component.
+
+\textbf {Bundling evidence for attestation}
+
+Principles
+
+\begin{itemize}
+\item First, authors fixed an attestation system.
+\item Then, authors extended the system.
 
 \section {Example}
 
