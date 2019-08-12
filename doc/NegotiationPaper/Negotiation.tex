@@ -128,16 +128,20 @@ To begin constructing the language, there are basic things we must implement.
 	\end{itemize}
 \item Evidence
 	\squash
+	\begin{itemize}
 	\item Evidence is produced by protocol execution and results in 
           basic values and compositions operators that indicate order 
-	      and place. 
+	      and place.
+	\end{itemize} 
 \end{itemize}
 
 Knowing these pieces are needed, an initial step by step procedure can be composed.
 
 \begin{enumerate}
+\squash
 \item A Request is generated from the appraiser and sent to the target
 	\begin{itemize}
+	\squash
 	\item Request now only composed of one thing.
 	\end{itemize}
 \item The target looks at the request and responds with the proposal. The
@@ -305,6 +309,7 @@ the syntax surrounding Copland. Below is a list of Copland
 syntax to aid in comprehension. 
 
 \begin{itemize}
+\squash
 \item Terms (or phrases) $=$ individual protocols 
 \item Evidence $=$ the form of evidence produced by protocol 
       execution
@@ -312,6 +317,7 @@ syntax to aid in comprehension.
 	are interpreted. Each place has a unique private key
 	and policy to identify how it preforms measurement
 \item (USM  a)
+    \squash
 	\begin{itemize}
 	\item USM $=$ User Space Measurement that preforms 
 	measurement in the local user space
@@ -319,6 +325,7 @@ syntax to aid in comprehension.
 	the details of the measurement operation
 	\end{itemize}
 \item (KIM \textit{P a})
+	\squash
 	\begin{itemize}
 	\item KIM $=$ Kernel Integrity Measurement that 
 	examines some external system
@@ -334,6 +341,7 @@ explain the language's measurement capabilities.
 Those capabilities are as follows:
 
 \begin{itemize}
+\squash
 \item Hashing a file
 \item Requesting a TPM quote
 \item Examining the local/proc directory contents
@@ -402,13 +410,54 @@ five principles of attestion architectures. They are as follows:
 
 \begin{enumerate}
   \item Fresh Information
+	\begin{itemize}
+	\item Is the appraiser willing to accepted a cached result?
+	\item How will we keep a time stamp on the evidence collected?
+	\end{itemize}
   \item Comprehensive Information
+	\begin{itemize}
+	\item Is the best evidence the one with the most information? 
+		  The target wants to avoid giving away too much information
+		  while the appraiser wants as much as possible. Does the
+          notion of "best" fit somewhere in the middle?
+	\item The space concern: does having too much information mean 
+          consuming too much space in memory?
+	\item How long is the appraiser willing to wait? If the request
+		  is large enough that it takes the target a while to generate
+          the proposal, what would be the maximum time limit?
+	\end{itemize}
   \item Constrained Disclosure
+	\begin{itemize}
+	\item Appraiser must be identifiable to the target. How should 
+		  we include some kind of label? A hash? 
+	\item Both Target and Appraiser policies must be included working
+		  to satisfy the appraiser's desire for disclosure and the
+		  target's desire for privacy. 
+	\end{itemize}
   \item Semantic Explicitness
+	\begin{itemize}
+	\item States semantics are presented in logical form so that appraiser
+          can infer consequences of attestations. 
+	\end{itemize}
   \item Trustworth mechanism
+	\begin{itemize}
+	\item The attestation architecture should be identified to the target
+		  and the appraiser. 
+	\end{itemize}
 \end{enumerate}
 
 From these five principles, one can develop a notion of "best."
+
+There are also five main constraints that are motivated by the priniples,
+as listed below. A system, therefore, must have the following abilities:
+
+\begin{enumerate}
+	\item Measure
+	\item Separate domains
+	\item Protect itself
+	\item Delegate attestation
+	\item Manage attestation
+\end{enumerate}
 
 \chapter {ISAKMP} 
 
