@@ -42,6 +42,17 @@ Understanding the shape of evidence so that I can understand
 the results of evaluating protocols to understand what 
 would be the best evidence. 
 
+Monad to describe the shape of the protocol? 
+
+Circumstances?
+
+Layered attestation paper to learn what measures what and system 
+capabilities. 
+Sufficiency =  What paul and john are talking about in paper
+Soundness = Measurement  I took gives me what I want
+
+"Finding scenarios is a job for a model checker" - Adam
+
 \chapter {Design}
 
 \section {Initial Overview}
@@ -156,18 +167,18 @@ syntax to aid in comprehension.
 \item P $=$ Place or location where attestation protocols 
 	are interpreted. Each place has a unique private key
 	and policy to identify how it preforms measurement
-\item ( USM \textit {\overline {a} } )
+\item (USM  a)
 	\begin{itemize}
 	\item USM $=$ User Space Measurement that preforms 
 	measurement in the local user space
-	\item \textit { \overline {a} } $=$ Abstractly represents 
+	\item measurement details $=$ \textit{a} $=$ Abstractly represents 
 	the details of the measurement operation
 	\end{itemize}
-\item (KIM \textit {P \overline {a} })
+\item (KIM \textit {P a})
 	\begin{itemize}
 	\item KIM $=$ Kernel Integrity Measurement that 
 	examines some external system
-	\item \textit{\overline{a}} $=$ abstractly represents 
+	\item measurement details $=$ \textit{a} $=$ abstractly represents 
 	the measurements operation
 	\end{itemize}
 \end{itemize}
@@ -204,7 +215,7 @@ the communication.
 \section {Ideal trust establishment function}
 
 The ideal trust establishment $\delta_m:R\rightarrow (E,\preceq,\top,\bot)$ ,
-or delta_m. 
+or $\delta_m$. 
 
 $\delta_m$ relates a request to the set of all evidence packages that 
 could result from that request.  Those evidence packages are ordered
@@ -287,7 +298,7 @@ look something like an is considered an interpreter:
 
 \section {Selecting Proposal}
 
-  The function, ($\gamma_{n}$), selects a protocol (P_{k}) 
+  The function, ($\gamma_{n}$), selects a protocol $(P_{k})$ 
   from a proposal $\langle p_0,p_1,\ldots,p_n\rangle$.  
 
   The selection of a Proposal will involve ensuring that the chosen
