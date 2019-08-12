@@ -36,10 +36,7 @@
 }
 
 \begin{document}
-
 \chapter {Current Focus}
-
-\section {}
 
 Understanding the shape of evidence so that I can understand
 the results of evaluating protocols to understand what 
@@ -89,6 +86,7 @@ To begin constructing the language, there are basic things we must implement.
 	\end{itemize}
 \item Request
 	\begin{itemize}
+	\squash
 	\item A request asks the target for evidence. 
 	\item It can ask for one thing, one thing or the other thing, or
           both things. 
@@ -97,6 +95,7 @@ To begin constructing the language, there are basic things we must implement.
 	\end{itemize}
 \item Proposal
 	\begin{itemize}
+	\squash
 	\item Proposal is a definition (function) which takes a request
           and generates a list of terms
 	\item Somewhere somehow the privacy policy must be satisfied. 
@@ -107,16 +106,17 @@ To begin constructing the language, there are basic things we must implement.
 	\end{itemize}
 \item What that Appraiser is willing to accept?
 	\begin{itemize}
+	\squash
 	\item The target might not respond with exactly what the appraiser
           had asked for. What is the procedure in that case?
 	\item Do we accept other things? Or only what is specifically asked for?
 	\item Somewhere their might be a flag that states if ONLY exact is
           acceptable but otherwise, the appraiser must list what is acceptable. 
 	\end{itemize}
-
 \end{itemize}
 
 Knowing these pieces are needed, an initial step by step procedure can be composed.
+
 \begin{enumerate}
 \item A Request is generated from the appraiser and sent to the target
 	\begin{itemize}
@@ -136,6 +136,56 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
     attestation.}
   \label{fig:att-app-seq}
 \end{figure}
+
+\section {Copland Language Basics}
+
+In defining Copland, two forms of semantics were written: 
+denotational, and event-based operational. First, denotational 
+semantics maps the terms to the evidence they produce. 
+The event-based operational semantics defines the system 
+of events associated with the protocol execution. 
+
+In order to understand the semantics, one must understand 
+the syntax surrounding Copland. Below is a list of Copland 
+syntax to aid in comprehension. 
+
+\begin{itemize}
+\item Terms (or phrases) $=$ individual protocols 
+\item Evidence $=$ the form of evidence produced by protocol 
+      execution
+\item P $=$ Place or location where attestation protocols 
+	are interpreted. Each place has a unique private key
+	and policy to identify how it preforms measurement
+\item ( USM \textit {\overline {a} } )
+	\begin{itemize}
+	\item USM $=$ User Space Measurement that preforms 
+	measurement in the local user space
+	\item \textit { \overline {a} } $=$ Abstractly represents 
+	the details of the measurement operation
+	\end{itemize}
+\item (KIM \textit {P \overline {a} })
+	\begin{itemize}
+	\item KIM $=$ Kernel Integrity Measurement that 
+	examines some external system
+	\item \textit{\overline{a}} $=$ abstractly represents 
+	the measurements operation
+	\end{itemize}
+\end{itemize}
+
+
+\subsection {Measurement Operations}
+
+There is no merit in defining Copland if one does not explain the language's measurement capabilities. Those capabilities are as follows:
+
+\begin{itemize}
+\item Hashing a file
+\item Requesting a TPM quote
+\item Examining the local/proc directory contents
+\end{itemize} 
+
+The minimal set of evidence operations includes CPY, SIG, HSH which parse to copying, singing and hashing evidence values, respectively. 
+
+\subsection {Evidence Values}
 
 \section {Privacy Policy}
 
@@ -334,7 +384,6 @@ Let Fruit be a set such that Fruit = { apple , orange , pear }. Then an
 inductive data structure for Fruit could read:  
 
 \begin{verbatim}
-
 Inductive request : Type := 
  | one n -> fruit
  | prod fruit -> fruit -> fruit
@@ -368,7 +417,6 @@ Inductive request (ev : Type) : Type :=
 | one n -> ev
 | prod ev -> ev -> ev
 | sum ev -> ev -> ev
-
 \end{verbatim}
 
 
