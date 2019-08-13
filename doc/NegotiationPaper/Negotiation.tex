@@ -7,6 +7,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\input{prelude.tex}
+
 \lhead{CAPTools Documentation}
 \rhead{KU System-Level Design Group}
 \lfoot{\copyright The University of Kansas, 2019}
@@ -65,7 +67,7 @@ negotiation is then to select the "best" protocol. However, in order to
 choose the "best" from the set, there must be some notion of ordering.
 Typically, the best protocol would be the one that relays the most 
 information about a system. Therefore, these protocols must all be evaluated
-to evidence, then ordered, then the initial protocols can be ordered. 
+to evidence, then an ordering on evidence must be imposed, then the initial protocols can be ordered. 
 In turn, an ordering over protocols will be discovered when all 
 protocols are evaluated to evidence.  
 
@@ -77,9 +79,9 @@ To begin constructing the language, there are basic things we must implement.
 \item Place
 	\begin{itemize}
 	\squash
-	\item Necessary to understand where the Negotiation is taking place.
-	\item Maybe place will be specialized for both the appraiser and
-          the target but that is a question for later
+	\item Formally, any location where attestation protocols are interpreted. 
+	\item Each place has a private key and policy
+		  identifying how it performs measurements. 
 	\item For now, place is a natural number that represents where the
           Negotiation is occurring.  
 	\end{itemize}
@@ -124,13 +126,22 @@ To begin constructing the language, there are basic things we must implement.
 	\item Somewhere their might be a flag that states if ONLY exact is
           acceptable but otherwise, the appraiser must list what is acceptable. 
 	\end{itemize}
+\item Evidence
+	\squash
+	\begin{itemize}
+	\item Evidence is produced by protocol execution and results in 
+          basic values and compositions operators that indicate order 
+	      and place.
+	\end{itemize} 
 \end{itemize}
 
 Knowing these pieces are needed, an initial step by step procedure can be composed.
 
 \begin{enumerate}
+\squash
 \item A Request is generated from the appraiser and sent to the target
 	\begin{itemize}
+	\squash
 	\item Request now only composed of one thing.
 	\end{itemize}
 \item The target looks at the request and responds with the proposal. The
@@ -147,56 +158,6 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
     attestation.}
   \label{fig:att-app-seq}
 \end{figure}
-
-\section {Copland Language Basics}
-
-In defining Copland, two forms of semantics were written: 
-denotational, and event-based operational. First, denotational 
-semantics maps the terms to the evidence they produce. 
-The event-based operational semantics defines the system 
-of events associated with the protocol execution. 
-
-In order to understand the semantics, one must understand 
-the syntax surrounding Copland. Below is a list of Copland 
-syntax to aid in comprehension. 
-
-\begin{itemize}
-\item Terms (or phrases) $=$ individual protocols 
-\item Evidence $=$ the form of evidence produced by protocol 
-      execution
-\item P $=$ Place or location where attestation protocols 
-	are interpreted. Each place has a unique private key
-	and policy to identify how it preforms measurement
-\item (USM  a)
-	\begin{itemize}
-	\item USM $=$ User Space Measurement that preforms 
-	measurement in the local user space
-	\item measurement details $=$ \textit{a} $=$ Abstractly represents 
-	the details of the measurement operation
-	\end{itemize}
-\item (KIM \textit {P a})
-	\begin{itemize}
-	\item KIM $=$ Kernel Integrity Measurement that 
-	examines some external system
-	\item measurement details $=$ \textit{a} $=$ abstractly represents 
-	the measurements operation
-	\end{itemize}
-\end{itemize}
-
-
-\subsection {Measurement Operations}
-
-There is no merit in defining Copland if one does not explain the language's measurement capabilities. Those capabilities are as follows:
-
-\begin{itemize}
-\item Hashing a file
-\item Requesting a TPM quote
-\item Examining the local/proc directory contents
-\end{itemize} 
-
-The minimal set of evidence operations includes CPY, SIG, HSH which parse to copying, singing and hashing evidence values, respectively. 
-
-\subsection {Evidence Values}
 
 \section {Privacy Policy}
 
@@ -299,7 +260,7 @@ look something like an is considered an interpreter:
 \section {Selecting Proposal}
 
   The function, ($\gamma_{n}$), selects a protocol $(P_{k})$ 
-  from a proposal $\langle p_0,p_1,\ldots,p_n\rangle$.  
+  from a proposal $\langle p_0,p_1,\ldots,p_{n}\rangle$.  
 
   The selection of a Proposal will involve ensuring that the chosen
   protocol meets the initial negotiation condition. This can be
@@ -315,7 +276,7 @@ look something like an is considered an interpreter:
   \end{verbatim} 
   
   The selection of a proposal has been greatly discussed. The
-  appraiser will always select the proposal, but how? There must be some
+  appraiser will always select the best proposal, but how? There must be some
   type of ordering on the members of the set that established a notion of
   "best." This is how a lattice comes into play. Within a lattice, the is
   some sort of ordering. Therefore, each unique system will produce its own
@@ -331,9 +292,174 @@ look something like an is considered an interpreter:
 Evaluating a proposal will occur in the Attestation Monad. The job of
 Negotiation is simply to choose a protocol that will be evaluated. It is
 important to note, however, the result of evaluating a proposal is evidence
-about the system.  
+about the system.
 
-\section {How ISAKMP fits} 
+\chapter {Copland Language Specifications}
+
+\section {Copland Language Basics}
+
+In defining Copland, two forms of semantics were written: 
+denotational, and event-based operational. First, denotational 
+semantics maps the terms to the evidence they produce. 
+The event-based operational semantics defines the system 
+of events associated with the protocol execution. 
+
+In order to understand the semantics, one must understand 
+the syntax surrounding Copland. Below is a list of Copland 
+syntax to aid in comprehension. 
+
+\begin{itemize}
+\squash
+\item Terms (or phrases) $=$ individual protocols 
+\item Evidence $=$ the form of evidence produced by protocol 
+      execution
+\item P $=$ Place or location where attestation protocols 
+	are interpreted. Each place has a unique private key
+	and policy to identify how it preforms measurement
+\item (USM  a)
+    \squash
+	\begin{itemize}
+	\item USM $=$ User Space Measurement that preforms 
+	measurement in the local user space
+	\item measurement details $=$ $\mathit{\bar{a}}$ $=$ Abstractly represents 
+	the details of the measurement operation
+	\end{itemize}
+\item (KIM \textit{P a})
+	\squash
+	\begin{itemize}
+	\item KIM $=$ Kernel Integrity Measurement that 
+	examines some external system
+	\item measurement details $=$ \textit{a} $=$ abstractly represents 
+	the measurements operation
+	\end{itemize}
+\end{itemize}
+
+\section {Measurement Operations}
+
+There is no merit in defining Copland if one does not 
+explain the language's measurement capabilities. 
+Those capabilities are as follows:
+
+\begin{itemize}
+\squash
+\item Hashing a file
+\item Requesting a TPM quote
+\item Examining the local/proc directory contents
+\end{itemize} 
+
+The minimal set of evidence operations includes 
+CPY, SIG, HSH which parse to copying, singing 
+and hashing evidence values, respectively. 
+
+\section {Evidence Values}
+
+The result of protocol execution produces evidence 
+values. These values are represented by $\varepsilon$, 
+or the empty set, $U_p(E)$, or the evidence value 
+produced by a USM, and $K_Q^P(E)$, or the evidence 
+result of a KIM of place P preformed by place Q. 
+
+\section {Evidence Semantics}
+
+Figure~\ref{fig:evidence-semantics} defines a denotational semantics,
+$\eval{t}{p}{e}$, mapping each Copland term, $t$, initial evidence
+value, $e$, in some place, $p$, to a resulting evidence term. In the formal
+Copland specification this is called the \emph{evidence semantics}, and
+it provides a requirements definition for Copland interpreters. 
+
+\newpage 
+\begin{figure}
+  \begin{eqnarray*}
+    \eval{\usme{\bar{a}}}{p}{e}&=&\Ue{\bar{a}}{p}{e}\\
+    \eval{\kim{q}{\bar{a}}}{p}{e}&=&\Ke{q}{\bar{a}}{p}{e}\\
+    \eval{\cpy}{p}{e}&=&e\\
+    \eval{\sig}{p}{e}&=&\sign{e}{p}\\
+    \eval{\hsh}{p}{e}&=&\hash{p}{e}\\
+    \eval{\at{q}{t}}{p}{e}&=&\eval{t}{q}{e}\\
+    \eval{t_1\linseqe t_2}{p}{e}&=&\eval{t_2}{p}{\eval{t_1}{p}{e}}\\
+    \eval{t_1\stackrel{\pi}{\linseq} t_2}{p}{e}&=&\eval{t_1}{p}{\pi_1(e)}\seqe
+      \eval{t_2}{p}{\pi_2(e)} \\
+    \eval{t_1\stackrel{\pi}{\linpar} t_2}{p}{e}&=&\eval{t_1}{p}{\pi_1(e)}\pare
+       \eval{t_2}{p}{\pi_2(e)} \\
+    & & \mbox{ where $\pi=(\pi_1,\pi_2)$}
+  \end{eqnarray*}
+  \vspace{-1ex}
+  \caption{Evidence Semantics.}
+  \label{fig:evidence-semantics}
+\end{figure}
+
+\section {Ordering Evidence}
+
+Evidence is ordered by the notion of "best." "Best" in this case is 
+situationally dependent and therefore depends on many varying 
+characteristics of the system. 
+
+\begin{itemize}
+  \squash
+  \item Most difficult for an attacker
+  \item Which signing alogrithm is favorable
+\end{itemize}
+
+Therefore, there are too many variable to uniquely cover
+each situation that could arise. Therefore, we must understand
+the types of information necessary to make the "best" decision. 
+Perhaps the best way to know what characteristics may lend
+themselves to the notion of "best" is with the "Principles of Remote 
+Attestion" paper by Coker et al. In that paper, the authors define
+five principles of attestion architectures. They are as follows: 
+
+\begin{enumerate}
+  \item Fresh Information
+	\begin{itemize}
+	\item Is the appraiser willing to accepted a cached result?
+	\item How will we keep a time stamp on the evidence collected?
+	\end{itemize}
+  \item Comprehensive Information
+	\begin{itemize}
+	\item Is the best evidence the one with the most information? 
+		  The target wants to avoid giving away too much information
+		  while the appraiser wants as much as possible. Does the
+          notion of "best" fit somewhere in the middle?
+	\item The space concern: does having too much information mean 
+          consuming too much space in memory?
+	\item How long is the appraiser willing to wait? If the request
+		  is large enough that it takes the target a while to generate
+          the proposal, what would be the maximum time limit?
+	\end{itemize}
+  \item Constrained Disclosure
+	\begin{itemize}
+	\item Appraiser must be identifiable to the target. How should 
+		  we include some kind of label? A hash? 
+	\item Both Target and Appraiser policies must be included working
+		  to satisfy the appraiser's desire for disclosure and the
+		  target's desire for privacy. 
+	\end{itemize}
+  \item Semantic Explicitness
+	\begin{itemize}
+	\item States semantics are presented in logical form so that appraiser
+          can infer consequences of attestations. 
+	\end{itemize}
+  \item Trustworth mechanism
+	\begin{itemize}
+	\item The attestation architecture should be identified to the target
+		  and the appraiser. 
+	\end{itemize}
+\end{enumerate}
+
+From these five principles, one can develop a notion of "best."
+
+There are also five main constraints that are motivated by the priniples,
+as listed below. A system, therefore, must have the following abilities:
+
+\begin{enumerate}
+	\item Measure
+	\item Separate domains
+	\item Protect itself
+	\item Delegate attestation
+	\item Manage attestation
+\end{enumerate}
+
+\chapter {ISAKMP} 
 
 In general, Internet Security Association and Key Management Protocol
 (ISAKMP) is the protocol that establishes Security Associations
@@ -348,7 +474,7 @@ outlined in ISAKMP allows an entity's initial
 communications to indicate which certificate authorities (CAs) it supports.
 In creating and managing the security association, one side must assume the role
 of initiator and the other assumes the role of responder. Proposal and
-transform payloads are then exchanged to establish the security associaiton.
+transform payloads are then exchanged to establish the security association.
 Also, ISAKMP provides key generation techniques that enforce  authentication
 of key exchange, key exchange symmetry and perfect forward secrecy. The specifics
 of key generation and transport is outlined in IKE. Finally, ISAKMP enforces
@@ -360,11 +486,14 @@ First, and entity's name is its identity where the agreed upon certificate
 authority defines the naming semantics. Once the certificate the verified,
 the name is verified, and then the name has meaning within the
 certificate authority. Also, the domain of interpretation (DOI) defines the
-situation and set of security policies that may be suppored. It also houses
+situation and set of security policies that may be supported. It also houses
 additional exchange types, a scheme for naming security-relevant information,
 key exchange algorithms, security policy attributes, and certificate authorities. 
 
-\section {Questions:}
+\chapter {Questions:}
+
+About Coq Verification:
+
 \begin{enumerate}
   \item What does the certificate authority get us? A secure channel but 
         does it say anything about the appraiser or target's
@@ -381,15 +510,23 @@ key exchange algorithms, security policy attributes, and certificate authorities
   \end{itemize}
   \item Is the targets response, the proposal, an ordered list?
         I think we need a function to ensure ordering.
+  \item How are we going to label events? With signing?
 \end{enumerate}
 
-\section {Examples}
+About Evidence Generation:
+
+\begin{enumerate}
+  \item The shape of evidence is discussed in Adam's paper. 
+		Is there no notion of actual evidence? Only the shape?
+\end{enumerate}
+
+\chapter {Examples}
 
 Throughout the process of understanding negotiation, there are many
 examples that have helped me get a better grasp on Coq and what Negotiation
 entails. 
 
-\subsection {The Fruit Example: understanding constructing values}
+\section {The Fruit Example: understanding constructing values}
 
 Let Fruit be a set such that Fruit = { apple , orange , pear }. Then an
 inductive data structure for Fruit could read:  
@@ -447,7 +584,7 @@ be seen in the following list below.
 \begin{enumerate}
 \item A request is sent by the Appraiser to the Target. The request must not
   violate the Appraiser's privacy policy. More detailed information about the
-  Request can be found in the earilier section. 
+  Request can be found in the earlier section. 
 \item The Target receives the request and generates a set of protocols also
   known as a proposal. Each protocol must satisfy the Target's privacy policy
   for each Request. 
@@ -477,7 +614,7 @@ will be accomplished.
   evidence. 
 \item The resulting lattice of evidence is then mapped back to the original set
   of protocols. 
-\item The origianl set of protocols, known as the proposal, now has an ordering
+\item The original set of protocols, known as the proposal, now has an ordering
   with the "best" protocol generating the most descriptive piece of evidence.
 \end{enumerate}
 
@@ -513,9 +650,12 @@ involves the hardware implementations.
 
 \section {Evidence}
 
-Overall, the goal of Copland, and the precursor of negotiation is preforming
-layered attestations.  The result of the layered attestation is to provide
-an appraiser with evidence about the integrity of a target. 
+Overall, the goal of Copland, and the result of negotiation is preforming
+layered attestations which provides
+an appraiser with evidence about the integrity of a target. In order to obtain
+a protocol from negotiation, however, a notition of "best" protocol must
+be implemented. The "best" protocol will be discovered by ordering the
+possible evidence values that can arise from processing the protocols. 
 
 \subsection {The Shape of Evidence}
 
