@@ -117,15 +117,6 @@ To begin constructing the language, there are basic things we must implement.
 	\item This leads me to ask "How do we write the privacy policy in
           terms of code?"
 	\end{itemize}
-\item What that Appraiser is willing to accept?
-	\begin{itemize}
-	\squash
-	\item The target might not respond with exactly what the appraiser
-          had asked for. What is the procedure in that case?
-	\item Do we accept other things? Or only what is specifically asked for?
-	\item Somewhere their might be a flag that states if ONLY exact is
-          acceptable but otherwise, the appraiser must list what is acceptable. 
-	\end{itemize}
 \item Evidence
 	\squash
 	\begin{itemize}
@@ -161,9 +152,9 @@ Knowing these pieces are needed, an initial step by step procedure can be compos
 
 \section {Privacy Policy}
 
-At this point, the privacy policy is some large, overarching being
-that controls the data that is sent back and forth between the appraiser
-and the target. Both the appraiser and the target have their own, unique
+At this point, the privacy policy is a filter for the target and appraiser, where 
+information passes through the filter before it is exchanged between parties. 
+Both the appraiser and the target have their own, unique
 privacy policies. Also, in more general terms, each computer or cluster
 must have a privacy policy as a target and as an appraiser so that it
 can morph between the two roles. 
@@ -171,7 +162,7 @@ can morph between the two roles.
 Who communication will occur between, be it a network of computers or
 one single computer, will be established in the Security Association.
 Once that is established, the privacy policy may change to reflect
-the communication. 
+the communication based on the role of target or appraiser. 
 
 \section {Ideal trust establishment function}
 
@@ -324,7 +315,7 @@ syntax to aid in comprehension.
 	\item measurement details $=$ $\mathit{\bar{a}}$ $=$ Abstractly represents 
 	the details of the measurement operation
 	\end{itemize}
-\item (KIM \textit{P a})
+\item (KIM $\mathit{P \bar{a}}$)
 	\squash
 	\begin{itemize}
 	\item KIM $=$ Kernel Integrity Measurement that 
@@ -367,7 +358,8 @@ value, $e$, in some place, $p$, to a resulting evidence term. In the formal
 Copland specification this is called the \emph{evidence semantics}, and
 it provides a requirements definition for Copland interpreters. 
 
-\newpage 
+\newpage
+
 \begin{figure}
   \begin{eqnarray*}
     \eval{\usme{\bar{a}}}{p}{e}&=&\Ue{\bar{a}}{p}{e}\\
@@ -397,7 +389,8 @@ characteristics of the system.
 \begin{itemize}
   \squash
   \item Most difficult for an attacker
-  \item Which signing alogrithm is favorable
+  \item Most detailed response for the appriaser
+  \item Longest or shortest time depending on situational awareness
 \end{itemize}
 
 Therefore, there are too many variable to uniquely cover
@@ -405,8 +398,8 @@ each situation that could arise. Therefore, we must understand
 the types of information necessary to make the "best" decision. 
 Perhaps the best way to know what characteristics may lend
 themselves to the notion of "best" is with the "Principles of Remote 
-Attestion" paper by Coker et al. In that paper, the authors define
-five principles of attestion architectures. They are as follows: 
+Attestation" paper by Coker et al. In that paper, the authors define
+five principles of attestation architectures. They are as follows: 
 
 \begin{enumerate}
   \item Fresh Information
@@ -466,10 +459,13 @@ In general, Internet Security Association and Key Management Protocol
 (SA) and cryptographic keys outlined in RFC 2408. There are
 four main goals of ISAKMP which include authenticating a communicating
 peer, creation and management of security associations, key generation techniques,
-and threat mitigation.
+and threat mitigation. In summary, the goal of ISAKMP is for transferring key
+and authentication data. 
 
 In terms of authenticating a communicating peer, ISAKMP encourages
-strong authentication through the use of a certificate authority. The procedure
+strong authentication through the use of a security association (SA). The SA is defined 
+as a relationship that describes how the entities will utilize security services to 
+communicate securely.The procedure
 outlined in ISAKMP allows an entity's initial
 communications to indicate which certificate authorities (CAs) it supports.
 In creating and managing the security association, one side must assume the role
@@ -480,6 +476,9 @@ of key exchange, key exchange symmetry and perfect forward secrecy. The specific
 of key generation and transport is outlined in IKE. Finally, ISAKMP enforces
 threat mitigation techniques by addressing the prevention of possible attacks
 such as anti-clogging, connection hijacking, and man-in-the-middle attacks.
+It is important to note that ISAKMP sets up security associations and then 
+provably does not alter the security associations during run-time. Instead,
+the SA's become read-only. 
 
 There are a few other concepts from ISAKMP that are important to note.
 First, and entity's name is its identity where the agreed upon certificate
@@ -489,6 +488,67 @@ certificate authority. Also, the domain of interpretation (DOI) defines the
 situation and set of security policies that may be supported. It also houses
 additional exchange types, a scheme for naming security-relevant information,
 key exchange algorithms, security policy attributes, and certificate authorities. 
+
+Furthermore, once a SA is created, it would be help to be able to reference the 
+SA at a later date. With that, a Security Parameter Index (SPI) is an identifier 
+specifically for Security Associations. A SPI pair may uniquely identify a SA but 
+the SPI implementation is dependent on the DOI. The DOI determines which SPIs
+are sent during communication.
+
+\section {What ISAKMP Communicates}
+
+In general, ISAKMP establishes security associations (SA) between two communicating
+parties. Below are the characteristics of a SA that are agreed upon by the Target and 
+the appraiser. 
+
+\begin{itemize}
+  \item Which certificate authority the entity supports
+  \item Naming semanitcs
+  	\begin{itemize}
+	  \item The name has meaning within the certificate authority when the name is verified. 
+	\end{itemize}
+  \item Domain of Interpretation (DOI)
+  	\begin{itemize}
+	  \item Defines payload formats
+	  \item Defines exchange type
+	  \item Defines a scheme for naming security-relevant information ie naming information
+	\end{itemize}
+\end{itemize}
+
+\section {How it works}
+
+\begin{enumerate}
+  \squash
+  \item ISAKMP Header = provides information required by the protocol to maintain
+  		association throughout communication.
+  \item Generic Payload Header = chains several payloads together and allows for the protocol 
+    		to remain flexible
+  \item Security Association Payload = convey the security attributes to be used in establishing
+  		the SA
+		\begin{itemize}
+		\squash
+		\item DOI identification is included here
+		\end{itemize}
+  \item Proposal Payload = various information associated with the security relationship
+  		\begin{itemize}
+		\squash
+		\item Populated with transform payloads that contain the SA information
+		\item Initiator sends proposal payload with one or more transform payloads within 
+		         each that define available security conditions
+		\item Responder selects the proposal and associated transform sets that best pertain
+			to the communication
+		\end{itemize}
+\end{enumerate}
+
+\section {ISAKMP Dictionaries}
+
+In order to store the components from the ISAKMP security association (SA) 
+
+\section {Works Cited}
+
+\begin{enumerate}
+	\item https://books.google.com/books?id=w2u6a_NZr_8C&pg=PA164&lpg=PA164&dq=ISAKMP+header&source=bl&ots=x45AtA8F2x&sig=ACfU3U3zxANfosIM-H-jKpBOKrrXsHxyxg&hl=en&sa=X&ved=2ahUKEwir_IeR3IDkAhXZW80KHczVD0YQ6AEwE3oECA8QAQ#v=onepage&q=ISAKMP%20header&f=false
+\end{enumerate}
 
 \chapter {Questions:}
 
@@ -511,8 +571,16 @@ About Coq Verification:
   \item Is the targets response, the proposal, an ordered list?
         I think we need a function to ensure ordering.
   \item How are we going to label events? With signing?
+  \item What that Appraiser is willing to accept?
+	\begin{itemize}
+	\squash
+	\item The target might not respond with exactly what the appraiser
+          had asked for. What is the procedure in that case?
+	\item Do we accept other things? Or only what is specifically asked for?
+	\item Somewhere their might be a flag that states if ONLY exact is
+          acceptable but otherwise, the appraiser must list what is acceptable. 
+	\end{itemize}
 \end{enumerate}
-
 About Evidence Generation:
 
 \begin{enumerate}
