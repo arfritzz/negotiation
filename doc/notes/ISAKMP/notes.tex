@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{ISAKMP}
+\author{arfritz97 }
+\date{August 2019}
+
+\begin{document}
+
+\maketitle
+
+\section {Understanding ISAKMP}
+
+Below is an inital overview of the capabilites of ISAKMP. The procedure for ISAKMP occurs in two phases where phase one is when two entities agree on how to protect further negotiation traffic while negotiating an ISAKMP SA for an authenticated and secure channel. Phase two is when the secure channel is then used to negotiate security services for IPSec.
+
+\begin{itemize}
+\item ISAKMP is the protocol for establishing Security Associations (SA) and cryptographic keys in an internet environment.
+\item ISAKMP is a part of IKE.
+	\begin{itemize}
+	\item IKE establishes the shared security policy and authenticated keys.
+	\item ISAKMP uses IKE for key exchange.
+	\end{itemize}
+\item Defines payloads for exchanging key generation and authentication data.
+\item Allows an entity's initial communications to indicate which certificate authorities (CAs) it supports.
+\item Overall, 4 goals
+	\begin{enumerate}
+	\item authenticating a communicating peer
+	\item creation and management of security associations
+	\item key generation techniques
+	\item threat mitigation
+\end{itemize}
+
+\section {ISAKMP Header}
+
+\subsection {Header Fields}
+
+\begin{itemize}
+\item Initiator Cookie (8 octects) = cookie of entity that initiated SA establishment, notification, or deletion.
+\item Responder Cookie (8 octects) 
+\end{itemize}
+
+\end{document}
