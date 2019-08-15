@@ -71,7 +71,7 @@ The following list details the possible next payload types as well as thier asso
 
 \subsection {Exchange Types}
 
-The next aspect that is necessary to define is the exchange type. This is useful as it tells the responder the desired exchange specifications such as fast exchange or slow exchange. The follow list details the exchage types with thier associated values. 
+The next aspect that is necessary to define is the exchange type. This is useful as it tells the responder the desired exchange specifications such as fast exchange or slow exchange. The follow list details the exchange types with their associated values. 
 
 \begin{itemize}
 \item NONE = 0
@@ -87,15 +87,15 @@ The next aspect that is necessary to define is the exchange type. This is useful
 
 \subsection {Payload Headers}
 
-Payload headers can be generic or custimized for the situation. A generic header simply includes Payload Data where the Data can change based on the situation. 
+Payload headers can be generic or customized for the situation. A generic header simply includes Payload Data where the Data can change based on the situation. 
 
 \subsection {SA Payload}
 
-The Domain of Interpretation (DOI) and Siuation are included in the Security Association payload. Some details about the Domain of Interpetaiton and Situation can be seen below.
+The Domain of Interpretation (DOI) and Situation are included in the Security Association payload. Some details about the Domain of Interpretation and Situation can be seen below.
 
 \begin{itemize}
-\item DOI (4 octets) = Identifies the DOI under which negotation takes place. A valueof 0 during Phase 1 specifies a Generic ISAKMP SA which cna be used for any protocol during Phase 2.
-\item Situation = A DOI-specific field that identifies teh situation under which this negotiation is taking place. 
+\item DOI (4 octets) = Identifies the DOI under which negotiation takes place. A value of 0 during Phase 1 specifies a Generic ISAKMP SA which can be used for any protocol during Phase 2.
+\item Situation = A DOI-specific field that identifies the situation under which this negotiation is taking place. 
 \end{itemize}
 
 \subsection {Proposal Payload}
@@ -103,29 +103,29 @@ The Domain of Interpretation (DOI) and Siuation are included in the Security Ass
 The proposal payload carries many unique aspects as seen with the following list below
 
 \begin{itemize}
-\item Payload Length = Lenght is octets of the entrie Proposal payload including the generic payload header, the Proposal payload, and all Transform payloads associated with this proposal.
+\item Payload Length = Length is octets of the entire Proposal payload including the generic payload header, the Proposal payload, and all Transform payloads associated with this proposal.
 \item Proposal Number = identifies the proposal number for the current payload
-\item Proposal ID = Specifies teh protocol identifier such as IPSEC ESP, IPSEC AH, OSPF, TLS, etc.
-\item SPI Size = Lenght in octets of hte SPI as defined by the Protocol ID
+\item Proposal ID = Specifies the protocol identifier such as IPSEC ESP, IPSEC AH, OSPF, TLS, etc.
+\item SPI Size = Length in octets of the SPI as defined by the Protocol ID
 \item No. of Transforms = Specifies the number of transforms for the proposal.
 \item SPI (variable) = sending entity's SPI
 \end{itemize}
 
 \subsection {Transform Payload}
 
-The unique thing about transform payloads is they inlcue a Tranform Number and a Tranform ID. The Transform number identifies the tranform number for the current payload. The Transform ID specifies the tranform identifier for the protocol within the current proposal. 
+The unique thing about transform payloads is they include a Transform Number and a Tranform ID. The Transform number identifies the transform number for the current payload. The Transform ID specifies the transform identifier for the protocol within the current proposal. 
 
 \subsection {Key Exchange Payload}
 
-This payload inlcudes key exchange data which could be of variable length. It is the data required to generate a session key and is specified by teh DOI and the associated Key Exchange algorithm.
+This payload includes key exchange data which could be of variable length. It is the data required to generate a session key and is specified by the DOI and the associated Key Exchange algorithm.
 
 \subsection {Certificate Payload}
 
-This payload includes cert encoding which indicates teh type of certificed contained in the certificate field. 
+This payload includes cert encoding which indicates the type of certified contained in the certificate field. 
 
 \section {Proposal Syntax}
 
-Perhaps it is most important to understand the composition of a proposal to understand ISAKMP. Proposals with the same Proposal number are taken as a logical AND and Proposals with differnt numbers are taken as the logical OR. Different transform within a proposal are taken as the logical OR. 
+Perhaps it is most important to understand the composition of a proposal to understand ISAKMP. Proposals with the same Proposal number are taken as a logical AND and Proposals with different numbers are taken as the logical OR. Different transform within a proposal are taken as the logical OR. 
 
 \subsection {Proposal Example}
 
@@ -133,24 +133,37 @@ The following details the chain of communication for this example.
 
 \begin{itemize}
 \item Proposal 1: AH
-\item Transform 1: HMAC_SHA
-\item Transform 2: HMAC_MD5
+\item Transform 1: \begin{verbatim}
+					HMAC_SHA
+					\end{verbatim}	 
+\item Transform 2: \begin{verbatim}
+					HMAC_MD5
+					\end{verbatim}
 \item Proposal 2: ESP
-\item Transform 1: 3DES with HMAC-SHA
-\item Transform 2: 3DES with HMAC-MD5
-\item Transform 3: AES with HMAC-SHA-256
+\item Transform 1: \begin{verbatim}
+					3DES with HMAC-SHA
+					\end{verbatim}
+\item Transform 2: \begin{verbatim}
+					3DES with HMAC-MD5
+					\end{verbatim}
+\item Transform 3: \begin{verbatim}
+					AES with HMAC-SHA-256
+					\end{verbatim}
 \item Proposal 3: ESP
-\item Transform 1: 3DES wiht HMAC-SHA
+\item Transform 1: \begin{verbatim}
+					3DES with HMAC-SHA
+					\end{verbatim}
 \item Proposal 4: PCP
 \item Transform 1:LZD
 \end{itemize}
 
-The base exchange then follows these steps
+The base exchange then follows these steps:
+
 \begin{enumerate}
-\item The Initiator send shte Header, SA, and Nonce to Responder to begin ISAKMP-SA negotiation
+\item The Initiator sends the Header, SA, and Nonce to Responder to begin ISAKMP-SA negotiation
 \item The Responder responds with HDR, SA, Nonce resulting in the basic SA being agreed 
-\item The Initiator responds wiht Header, KE, IDii, and Auth which includes the key generated by the responder (KE) and teh Initiator identity verified (Idii)
-\item The Responder responds with HDR, KE, Idir, Auth which includes the responder ident verified (KE) and the initator key generated (IDir). The security association (SA) is established. 
+\item The Initiator responds with Header, KE, IDii, and Auth which includes the key generated by the responder (KE) and the Initiator identity verified (Idii)
+\item The Responder responds with HDR, KE, Idir, Auth which includes the responder ident verified (KE) and the initiator key generated (IDir). The security association (SA) is established. 
 \end{enumerate}
 
 
