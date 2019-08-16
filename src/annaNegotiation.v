@@ -4,6 +4,25 @@ Require Import Lists.ListTactics.
 Require Import Ensembles.
 (*Require Import Poset.*)
 
+(* Before understanding a request, a SA must
+   be established using ISAKMP. The goal of
+   ISAKMP is to define a procedure for authenticating
+   a communicating peer as well as a procedure for key
+   generation techniques.
+
+   This is done through a series of headers that describe
+   the payload types, and exchange types
+
+ *)
+
+(* Coq Inductive terms are used to create a data structure *)
+
+Inductive SA : Type :=
+| payloadType ( n : nat )
+| exchangeType ( n : nat).
+
+  
+
 (* The first step is a Negotiation Request.
    Right now, we are not sure exactly what a Request
    will look like so lets just say it is a natural number.
@@ -92,14 +111,4 @@ Definition proposal := (request nat) -> list protocol.
    define a hierarcy of protocols in order to make the 
    decision. Maybe a function is the best way to go about 
    establishing an ordering. *)
-
-(* Questions:
-
-  1. Best definition of protocol?
-  2. Additional function that sorts the proposals
-     ( this would sort based on defined join and meet
-       so I need to define the join and meet. How to 
-       represent a lattice? )
-  3. Is an overarching definition of negotiation necessary?
-  4. Where should the privacy policy be defined?
 
