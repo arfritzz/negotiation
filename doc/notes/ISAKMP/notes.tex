@@ -21,7 +21,9 @@
 
 \maketitle
 
-\chapter {Understanding ISAKMP}
+\chapter{Understanding ISAKMP}
+
+\section{ISAKMP Overview}
 
 Below is an inital overview of the capabilites of ISAKMP where ISAKMP outlines framework for authentication and key exchange but is key exchange independent. Then, IKE is key dependent where the procedure for IKE occurs in two phases where phase one is when two entities agree on how to protect further negotiation traffic while negotiating an ISAKMP SA for an authenticated and secure channel. Phase two is when the secure channel is then used to negotiate security services for IPSec.
 
@@ -200,7 +202,19 @@ With that, the following options are listed before for each of the different cat
   \item integer value (86400 is default) = 120 to 2147483647 seconds
   \end{itemize}
 
-\chapter {Proposal Syntax}
+\section{IKE Overview}
+
+Where ISAKMP lays out the framework, IKE provides the protocol for the
+implementation of creation of Security Associations where IKE offers the
+benefits of automatic negotiation and authentication.
+
+The framework of IKE relies of teh frameowrks specified in ISAKMP for key
+exchange and authentication. Then, IKE uses the Oakley protocol to specify
+a sequence of key exchanges and describe thier services. For Oakley, the
+Diffie-Hellman algorithm is choosen as the default alogrithm for key exchange.
+Finally, IKE uses SKEME to specify the actual method of key exchange. 
+
+\chapter{Proposal Syntax}
 
 Perhaps it is most important to understand the composition of a proposal to understand ISAKMP. Proposals with the same Proposal number are taken as a logical AND and Proposals with different numbers are taken as the logical OR. Different transform within a proposal are taken as the logical OR.
 
