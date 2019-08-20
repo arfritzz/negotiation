@@ -2,6 +2,7 @@ Require Import Omega.
 Require Import List.
 Require Import Lists.ListTactics.
 Require Import Ensembles.
+Require Import String.
 (*Require Import Poset.*)
 
 (* Before understanding a request, a SA must
@@ -18,27 +19,19 @@ Require Import Ensembles.
 (* Coq Inductive terms are used to create a data structure *)
 
 Inductive SA : Type :=
-| payloadType ( n : nat )
-| exchangeType ( n : nat).
+| authMethod (a : string)
+| encrypMethod (e : string)
+| HMAC (h : string)
+| DHgroup (g : nat)
+| time (t : nat).
 
-  
 
-(* The first step is a Negotiation Request.
-   Right now, we are not sure exactly what a Request
-   will look like so lets just say it is a natural number.
-*)
+(* What can you prove about SA??*)
+(* I want the security association to produce 
+   a natural number, like that is is signed by a natural
+   number. How do I do that? *)
 
 Definition place := nat.
-
-(* The Security Association provides secure data connection
-   between two network devices. *)
-
-Definition securityAssociation := nat. 
-
-(* A term is needed for the privicy policy and a Proposal.
-   A proposal will be composed of a list of terms that is 
-   the target's response to an attestation request. Furthermore,
-   before sending the proposal *)
 
 Inductive term : Type :=
 | KIM : nat -> term
@@ -61,29 +54,35 @@ Definition myterm5 := (PAR (SIG (USM 4))).
    is composed of certificates that enforce the privacy policy
    of the appraiser. *)
 
-Inductive request (term : Type) := 
+(*Inductive request (term : Type) := 
 | EV : term -> (request term)
 | SUM : term -> (request term) -> (request term)
-| PROD : term -> (request term) -> (request term).
+| PROD : term -> (request term) -> (request term). *)
 
+(* I built a data structure with a base type of evidence
+   where it can be composed of evidence as a sum
+   or product. Still unsure how this differs from
+   the other type of Inductive request definition *)
+
+Inductive request : Type :=
+| EV (t : term)
+| SUM (t1 t2 : request)
+| PROD (t1 t2 : request).      
+    
 (* Now, how to create requests *)
 
 Check request.
 
-Definition myrequest1 := request (place).
-Definition myrequest2 := request (term).
+Definition myrequest1 := EV (myterm1).
+Definition myrequest := EV (myterm3).
+Definition myrequest2 := SUM (myrequest1) (myrequest).
 (*Definition myrequest3 := request (myterm1).*)
 
-(* not sure how to create a request 
-   but it must map from Type -> Type. *)
+(* A protocol is  a list of terms 
+   But those terms can be arranged in certain ways
+   like parallel execution, *)
 
-(* A protocol is simply a list of terms *)
-
-(*Inductive protocol : Type :=
-| nil
-| cons (h : term) (t : list term).*)
-
-Definition protocol := list term.
+Definition proposal := list term.
 
 Notation "x :: l" := (cons x l)
                      (at level 60, right associativity).
@@ -93,7 +92,25 @@ Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 (* What about examples of protocols? *)
 (* Not sure which definition works? *)
 
-Definition proposal := (request nat) -> list protocol.
+(* Definition proposal := (request) -> protocol. *)
+
+Fixpoint evalrequest (r : request) : proposal :=
+  match r with
+  | EV (KIM _) => myterm1 :: []
+  | EV (USM _) => myterm1 :: []
+  | EV (AT _ _) => myterm1 :: []
+  | EV (SEQ _ _) => myterm1 :: []
+  | EV (PAR _ _) => myterm1 :: []
+  | EV (SIG _) => myterm1 :: []
+  | SUM r1 r2 => match r1 with
+                 | EV r1 => match r2 with
+                            | EV r2 => EV r1 :: EV r2
+                            | _ => EV r1 :: evalrequest r2
+                            end
+                 end      
+  end.
+
+(* How does request shape into the list?? *)
 
 (* If I wanted to say "Compute request 5" idk how to do that
    or where I defined these things in this language. 
