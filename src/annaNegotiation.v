@@ -3,6 +3,7 @@ Require Import List.
 Require Import Lists.ListTactics.
 Require Import Ensembles.
 Require Import String.
+(* Require Import PartialMap. *)
 (*Require Import Poset.*)
 
 (* Before understanding a request, a SA must
@@ -41,8 +42,10 @@ Inductive term : Type :=
 | PAR : term -> term -> term
 | SIG : term -> term.
 
+Check term.
+
 Definition myterm1 := (KIM 3).
-Definition myterm2 := (AT 4).
+Definition myterm2 := (AT 4 (USM 4)).
 Definition myterm3 := (SIG (KIM 3)).
 Definition myterm4 := (SEQ (KIM 3)).
 Definition myterm5 := (PAR (SIG (USM 4))).
@@ -69,7 +72,8 @@ Inductive request : Type :=
 | SUM (t1 t2 : request)
 | PROD (t1 t2 : request).      
     
-(* Now, how to create requests *)
+(* We have now defined request as type SET
+ *)
 
 Check request.
 
@@ -94,20 +98,64 @@ Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
 (* Definition proposal := (request) -> protocol. *)
 
+(* Options to match a request with are nothing,
+   evidence, sum, product. 
+
+   When nothing, go to the empty list, otherwise, 
+   add to the front of the list.
+ *)
+
+Inductive id : Type :=
+| ID (t : nat).
+
+Check id.
+
+(* Definition eqb_id (t1 t2 : id) :=
+  match t1, t2 with
+  | ID t1, ID t2 => Same_set t1 t2
+  end. *)
+
+(* Two ways to construct partial map, either empty or using record with an existing 
+   partial map to construct a key-to-value mapping *)
+
+Inductive partial_map : Type :=
+| empty
+| record (i : id) (r : request) (m : partial_map).
+
+Definition my_partial_map_base := record (ID 1) (EV (KIM 3)) (empty).
+Check my_partial_map_base.
+
+Definition update (d: partial_map) (x: id) (r_value : request) : partial_map :=
+  record x r_value d.
+
+Definition my_partial_map_1 := update (my_partial_map_base) (ID 2) (SUM (EV (KIM 3)) (EV (USM 3))).
+
+(* Now we need to be able to find the value with the key. *)
+
+Inductive natoption : Type :=
+| Some (r : request)
+| None.
+
+Definition eqb_id (x1 x2 : id) :=
+ match x1, x2 with
+ | ID n1, ID n2 => n1 =? n2
+ end.
+
+Fixpoint find (x : id) (d : partial_map) : natoption :=
+  match d with
+  | empty => None
+  | record y r d' => if eqb_id x y
+                     then Some r
+                     else find x d'
+  end.
+
+
+
+
 Fixpoint evalrequest (r : request) : proposal :=
   match r with
-  | EV (KIM _) => myterm1 :: []
-  | EV (USM _) => myterm1 :: []
-  | EV (AT _ _) => myterm1 :: []
-  | EV (SEQ _ _) => myterm1 :: []
-  | EV (PAR _ _) => myterm1 :: []
-  | EV (SIG _) => myterm1 :: []
-  | SUM r1 r2 => match r1 with
-                 | EV r1 => match r2 with
-                            | EV r2 => EV r1 :: EV r2
-                            | _ => EV r1 :: evalrequest r2
-                            end
-                 end      
+  | EV r1 => [r1]
+  | SUM r1 r2 => 
   end.
 
 (* How does request shape into the list?? *)
