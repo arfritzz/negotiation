@@ -130,7 +130,11 @@ Inductive partial_map : Type :=
 | empty
 | record (i : id) (p : protocol) (m : partial_map).
 
-(* Where ID is the request *)
+(* Where each entry of the map is
+   an ID that is the request *)
+
+(* For now we will assume there is only 
+   one term being requested at a time *)
 
 Definition my_partial_map_base := record (ID (EV (KIM 3))) ((KIM 3)) (empty).
 Check my_partial_map_base.
@@ -159,7 +163,39 @@ Check request.
 Definition conditional_eq {A} (x y : A) := x = y.
 Check conditional_eq.
 
-Definition eq_request (r1 r2 : request) := forall a : term , In a r1 <-> In a r2.
+(* Definition eq_request (r1 r2 : request) := forall a : term , In a r1 <-> In a r2. *)
+
+Definition eq_term (t1 t2 : term) : bool :=
+match t1 with
+| KIM x1 => match t2 with
+            | KIM x2 => if eqb x1 x2 then true else false
+            | _ => false
+            end.
+| USM x1  => match t2 with
+            | USM x2 => if eqb x1 x2 then true else false
+            | _ => false
+            end.
+(* | AT : place -> term -> term *)
+| SEQ : term -> term -> term
+| PAR : term -> term -> term
+| SIG : term -> term.
+end.
+
+| KIM : nat -> term
+| USM : nat -> term
+| AT : place -> term -> term
+| SEQ : term -> term -> term
+| PAR : term -> term -> term
+| SIG : term -> term.
+
+Definition eq_request (r1 r2 : request) : bool :=
+  match r1 with
+  | EV x1 => match r2 with
+               | EV x2 => 
+  | SUM x1 x2 
+  | PROD x1 x2
+         
+                   
 
 Fixpoint find (x : id) (d : partial_map) : requestoption :=
   match d with
