@@ -272,12 +272,19 @@ look something like an is considered an interpreter:
 A protocol is a phrase (T) parameterized by atomic axioms (A).
 The protocol can suggest the action be preformed at the assoicated place
 (measure the local environment), or measure another place. These
-measurements can be taking in sequence where the first term is input
-to the second term, in sequence where the first term runs to compeltion
-before the second term begins (differs in that evidence is not send from the
+measurements can be taken in sequence or parallel. There are two types of sequence
+calculations, the first is where the first term is input
+to the second term dicatated by $(t \linseqe t)$.
+When doing this evaluation, the first term runs to compeltion
+before the second term begins. The other kind of linear evaluation
+differs in that evidence is not send from the
 first term as input to the second term, rather each term recieves some
-filtered version of evidence accumulated from the parent phrase), or two
-subterms execued in parallel with data splitting. 
+filtered version of evidence accumulated from the parent phrase. This
+is represented with $(t\braseqe\pi t)$. Finally, two
+subterms can be execued in parallel with data splitting,
+represented by $(t\brapare\pi t)$. In the final two cases, $\pi$ is the
+data splitting function that dictates how evidence is split
+between two subterms. 
 
 \section{Selecting a Protocol}
 
@@ -309,12 +316,23 @@ subterms execued in parallel with data splitting.
   seen in the example because each system is different. Instead, we must
   keep it more general. 
 
+\subsection{Creating a Map for Requests to Protocols}
+  
+In order to evaluate a request, there must be some sort of value that
+the request constructors evaluate to. This way of storing values lends
+itself to a Map where elements are placed into the data structure in
+key/value pairs. To get the value, the user supplies the key and the
+dictionary returns the value.
+
+If the lookup key is not in the table, the map should return an empty
+default element. 
+  
 \section{Evaluating Proposal}
 
 Evaluating a proposal will occur in the Attestation Monad. The job of
 Negotiation is simply to choose a protocol that will be evaluated. It is
 important to note, however, the result of evaluating a proposal is evidence
-about the system.
+about the system. 
 
 \chapter{Copland Language Specifications}
 
