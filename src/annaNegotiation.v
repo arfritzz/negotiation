@@ -109,7 +109,16 @@ Definition myterm5 := (PAR (SIG (USM 4))).
 Inductive request : Type :=
 | EV (t : term)
 | SUM (t1 t2 : request)
-| PROD (t1 t2 : request).      
+| PROD (t1 t2 : request).
+
+Theorem request_comm : forall (r1 r2 : request),
+    SUM r1 r2 = SUM r2 r1.
+Proof.
+  intros r1. 
+  induction r1.
+  + intros. simpl.
+Admitted.
+
     
 (* We have now defined request as type SET *)
 (* We need it to be communitive for SUM and PROD so
@@ -290,16 +299,9 @@ Fixpoint R_find (x : R_id) (d : protocol_map) : requestoption :=
                      else R_find x d'
   end.
 
-(* to match the map option, we must, for now, just say the request is some
-   natural number. *)
-
-(* How does request shape into the list?? *)
-
-(* If I wanted to say "Compute request 5" idk how to do that
-   or where I defined these things in this language. 
+(* How does request shape into the list??
+   Should we be storing values somewhere??  *) 
   
-   Somewhere in PLUS someone came up with the notition of 
-   (S (S n)) but where/how did they think to do this? *)
 
 (* After a proposal is generated, the appraiser must then select 
    the appropriate protocol for the attestation manager. 
@@ -311,4 +313,19 @@ Fixpoint R_find (x : R_id) (d : protocol_map) : requestoption :=
    define a hierarcy of protocols in order to make the 
    decision. Maybe a function is the best way to go about 
    establishing an ordering. *)
+
+(* Things to discuss
+   1. properties of request
+   2. why two requests can't be equal
+   3. where are we saving the examples?
+      Is there a way to save examples and import them from a file?
+ *)
+
+Fixpoint targ_priv_poly (p : protocol) : bool :=
+  match p with
+  | KIM x => true
+  | _ => false
+  end.
+
+(* Defining like this wouldnt make it situationally dependent *)
 
