@@ -19,18 +19,56 @@ Require Import String.
 
 (* Coq Inductive terms are used to create a data structure *)
 
-Inductive SA : Type :=
+Inductive SA_param : Type :=
 | authMethod (a : string)
 | encrypMethod (e : string)
 | HMAC (h : string)
 | DHgroup (g : nat)
 | time (t : nat).
 
+(* Can have one parameter or more than one parameter
+   specificed by the SA *) 
+
+Inductive SA : Type :=
+| One (p1 : SA_param)
+| More (p1 p2 : SA).
+
+Inductive id : Type :=
+| ID (n : nat).
+
+Inductive SA_map : Type :=
+| empty
+| record (i : id) (sa : SA) (m : SA_map).
+
+Definition my_SA_map_base := record (ID 0) (One (time (1200)))  (empty).
+Check my_SA_map_base.
+
+Definition update (d: SA_map) (i : id) (t_value : SA) : SA_map :=
+  record i t_value d.
+
+Inductive SA_option : Type :=
+| Some (sa : SA)
+| None.
+
+Definition eqb_id (x1 x2 : id) :=
+  match x1, x2 with
+  | ID x1, ID x2 => x1 =? x2
+  end.
+
+Fixpoint find (x : id) (d : SA_map) : SA_option :=
+  match d with
+  | empty => None
+  | record y r d' => if  eqb_id x y
+                     then Some r
+                     else find x d'
+  end.
+
+Compute find (ID 0) (my_SA_map_base).
 
 (* What can you prove about SA??*)
-(* I want the security association to produce 
-   a natural number, like that is is signed by a natural
-   number. How do I do that? *)
+(* Where do I store the values for the SA? *)
+(* We need a delete option for the partial map?
+   How should I write that? *)
 
 Definition place := nat.
 
@@ -126,9 +164,9 @@ Check id.
    You can look up the requested term in the map and the request protocol will be 
    returned. *)
 
-Inductive partial_map : Type :=
+Inductive protocol_map : Type :=
 | empty
-| record (i : id) (p : protocol) (m : partial_map).
+| record (i : id) (p : protocol) (m : protocol_map).
 
 (* Where each entry of the map is
    an ID that is the request *)
@@ -136,18 +174,18 @@ Inductive partial_map : Type :=
 (* For now we will assume there is only 
    one term being requested at a time *)
 
-Definition my_partial_map_base := record (ID (EV (KIM 3))) ((KIM 3)) (empty).
+Definition my_protocol_map_base := record (ID (EV (KIM 3))) ((KIM 3)) (empty).
 Check my_partial_map_base.
 
-Definition update (d: partial_map) (i : id) (t_value : protocol) : partial_map :=
+Definition update (d: protocol_map) (i : id) (t_value : protocol) : protocol_map :=
   record i t_value d.
 
-Definition my_partial_map_1 := update (my_partial_map_base) (ID (EV (USM 3))) (SEQ (USM 3) (KIM 3)).
+Definition my_partial_map_1 := update (my_protocol_map_base) (ID (EV (USM 3))) (SEQ (USM 3) (KIM 3)).
 
 (* Now we need to be able to find the value with the key. *)
 
 Inductive requestoption : Type :=
-| Some (t : request)
+| Some (r : request)
 | None.
 
 (* Now we need the option to return none. This can be done by seeing 
@@ -165,28 +203,30 @@ Check conditional_eq.
 
 (* Definition eq_request (r1 r2 : request) := forall a : term , In a r1 <-> In a r2. *)
 
-Definition eq_term (t1 t2 : term) : bool :=
+Fixpoint eq_term (t1 t2 : term) : bool :=
 match t1 with
 | KIM x1 => match t2 with
-            | KIM x2 => if eqb x1 x2 then true else false
+            | KIM x2 => if x1 =? x2 then true else false
             | _ => false
-            end.
+            end
 | USM x1  => match t2 with
-            | USM x2 => if eqb x1 x2 then true else false
+            | USM x2 => if x1 =? x2 then true else false
             | _ => false
-            end.
-(* | AT : place -> term -> term *)
-| SEQ : term -> term -> term
-| PAR : term -> term -> term
-| SIG : term -> term.
+            end
+| AT p1 x1 => match t2 with
+              | AT p2 x2 => if p1 =? p2 then eq_term x1 x2 else false
+              | _ => false
+              end
+| SEQ x1 x2 => eq_term x1 x2
+| PAR x1 x2 => eq_term x1 x2
+| SIG x1 => match t2 with
+            | SIG x2 => eq_term x1 x2
+            | _ => false
+            end
 end.
 
-| KIM : nat -> term
-| USM : nat -> term
-| AT : place -> term -> term
-| SEQ : term -> term -> term
-| PAR : term -> term -> term
-| SIG : term -> term.
+Compute eq_term (KIM 3) (KIM 3).
+Compute eq_term (KIM 3) (USM 3).
 
 Definition eq_request (r1 r2 : request) : bool :=
   match r1 with
