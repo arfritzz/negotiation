@@ -235,7 +235,7 @@ be asserted by the SA.
    \item place
    \item the appraiser privacy policy
    \item ISAKMP
-  \end{itemize}
+   \end{itemize}
 
 \section{Proposal}
 
@@ -750,6 +750,22 @@ involves the hardware implementations.
   \label{fig:certification-fig}
 \end{figure}
 
+\section{Request}
+
+The request, as previously mentioned, can contain one item, a sum of
+items or a product of items. With that, I think we must prove things
+about properties of the request.
+
+\begin{itemize}
+\item Commutative $ a + b = b + a $
+\item Associative $ (a + b) + c = a + (b + c) $
+  \begin{itemize}
+  \item Order of evaluation matters so I think we need this one.
+  \end{itemize}
+\item Distributive (I am thinking useful for places maybe?)
+  $ (a x (b + c)) = (a x b) + (a x c) $
+\end{itemize}
+
 \section{Evidence}
 
 Overall, the goal of Copland, and the result of negotiation is preforming
@@ -762,7 +778,7 @@ possible evidence values that can arise from processing the protocols.
 \subsection{The Shape of Evidence}
 
 As protocols are evaluated to evidence, there is a natural shape that
-arises. 
+arises.
 
 \chapter{Examples}
 
