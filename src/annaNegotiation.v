@@ -33,37 +33,38 @@ Inductive SA : Type :=
 | One (p1 : SA_param)
 | More (p1 p2 : SA).
 
-Inductive id : Type :=
-| ID (n : nat).
+Inductive SA_id : Type :=
+| SA_ID (n : nat).
 
 Inductive SA_map : Type :=
-| empty
-| record (i : id) (sa : SA) (m : SA_map).
+| SA_empty
+| SA_record (i : SA_id) (sa : SA) (m : SA_map).
 
-Definition my_SA_map_base := record (ID 0) (One (time (1200)))  (empty).
+Definition my_SA_map_base := SA_record (SA_ID 0) (One (time (1200)))  (SA_empty).
 Check my_SA_map_base.
 
-Definition update (d: SA_map) (i : id) (t_value : SA) : SA_map :=
-  record i t_value d.
+Definition SA_update (d: SA_map) (i : SA_id) (t_value : SA) : SA_map :=
+  SA_record i t_value d.
 
 Inductive SA_option : Type :=
 | Some (sa : SA)
 | None.
 
-Definition eqb_id (x1 x2 : id) :=
+Definition eqb_id (x1 x2 : SA_id) :=
   match x1, x2 with
-  | ID x1, ID x2 => x1 =? x2
+  | SA_ID x1, SA_ID x2 => x1 =? x2
   end.
 
-Fixpoint find (x : id) (d : SA_map) : SA_option :=
+Fixpoint SA_find (x : SA_id) (d : SA_map) : SA_option :=
   match d with
-  | empty => None
-  | record y r d' => if  eqb_id x y
+  | SA_empty => None
+  | SA_record y r d' => if  eqb_id x y
                      then Some r
-                     else find x d'
+                     else SA_find x d'
   end.
 
-Compute find (ID 0) (my_SA_map_base).
+Compute SA_find (SA_ID 0) (my_SA_map_base).
+Compute SA_find (SA_ID 1) (my_SA_map_base).
 
 (* What can you prove about SA??*)
 (* Where do I store the values for the SA? *)
@@ -110,16 +111,21 @@ Inductive request : Type :=
 | SUM (t1 t2 : request)
 | PROD (t1 t2 : request).      
     
-(* We have now defined request as type SET
- *)
+(* We have now defined request as type SET *)
+(* We need it to be communitive for SUM and PROD so
+   order doesnt matter *)
+
 
 Definition protocol := term.
 
 Check request.
 
-Definition myrequest1 := EV (myterm1).
-Definition myrequest := EV (myterm3).
-Definition myrequest2 := SUM (myrequest1) (myrequest).
+Definition myrequest0 := EV (myterm1).
+Definition myrequest1 := EV (myterm3).
+Definition myrequest2 := SUM (myrequest1) (myrequest0).
+Definition myrequest3 := SUM (EV (KIM 3)) (EV (KIM 10)).
+Definition myrequest4 := SUM (EV (KIM 10)) (EV (KIM 3)).
+
 (*Definition myrequest3 := request (myterm1).*)
 
 Definition myprotocol1 := PAR (KIM 3) (USM 3).
@@ -147,10 +153,10 @@ Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
    add to the front of the list.
  *)
 
-Inductive id : Type :=
-| ID (r : request).
+Inductive R_id : Type :=
+| R_ID (r : request).
 
-Check id.
+Check R_id.
 
 (* Definition eqb_id (t1 t2 : id) :=
   match t1, t2 with
@@ -165,8 +171,8 @@ Check id.
    returned. *)
 
 Inductive protocol_map : Type :=
-| empty
-| record (i : id) (p : protocol) (m : protocol_map).
+| R_empty
+| R_record (i : R_id) (p : protocol) (m : protocol_map).
 
 (* Where each entry of the map is
    an ID that is the request *)
@@ -174,19 +180,19 @@ Inductive protocol_map : Type :=
 (* For now we will assume there is only 
    one term being requested at a time *)
 
-Definition my_protocol_map_base := record (ID (EV (KIM 3))) ((KIM 3)) (empty).
-Check my_partial_map_base.
+Definition my_protocol_map_base := R_record (R_ID (EV (KIM 3))) (KIM 3) (R_empty).
+Check my_protocol_map_base.
 
-Definition update (d: protocol_map) (i : id) (t_value : protocol) : protocol_map :=
-  record i t_value d.
+Definition R_update (d: protocol_map) (i : R_id) (t_value : protocol) : protocol_map :=
+  R_record i t_value d.
 
-Definition my_partial_map_1 := update (my_protocol_map_base) (ID (EV (USM 3))) (SEQ (USM 3) (KIM 3)).
+Definition my_partial_map_1 := R_update (my_protocol_map_base) (R_ID (EV (USM 3))) (SEQ (USM 3) (KIM 3)).
 
 (* Now we need to be able to find the value with the key. *)
 
 Inductive requestoption : Type :=
-| Some (r : request)
-| None.
+| R_Some (p : protocol)
+| R_None.
 
 (* Now we need the option to return none. This can be done by seeing 
    if the two terms are equal. But we need an equality function to 
@@ -228,33 +234,64 @@ end.
 Compute eq_term (KIM 3) (KIM 3).
 Compute eq_term (KIM 3) (USM 3).
 
-Definition eq_request (r1 r2 : request) : bool :=
-  match r1 with
-  | EV x1 => match r2 with
-               | EV x2 => 
-  | SUM x1 x2 
-  | PROD x1 x2
-         
-                   
+Fixpoint eq_request (r1 r2 : R_id) : bool :=
+  match r1, r2 with
+  | R_ID (EV x1) , R_ID (EV x2) => if eq_term x1 x2 then true else false
+  | R_ID (SUM x1 x2) , R_ID (SUM x3 x4) => false (* if eq_request (R_ID x1) (R_ID x3)
+                                           then true (* eq_request (R_ID x2) (R_ID x4)*)
+                                           else false *)
+  | R_ID (PROD x1 x2), R_ID (PROD x3 x4) => false (* if eq_request (R_ID x1) (R_ID x3)
+                                            then true (* eq_request (R_ID x2) (R_ID x4)*)
+                                            else false *)
+  | _ , _ => false
+  end.
 
-Fixpoint find (x : id) (d : partial_map) : requestoption :=
+Compute eq_request (R_ID myrequest1) (R_ID myrequest2).
+Compute eq_request (R_ID (EV (KIM 1))) (R_ID (EV (KIM 1))).
+Compute eq_request (R_ID myrequest2) (R_ID myrequest4). (* These should be equal *)
+
+(* The problem is with the sum and prod parts. 
+   But I'm not quite sure what we can do to 
+   eliminate. It must recurse for each element
+   of sum and prod to make sure they match. 
+   But the thing about sum and prod is that x1 can
+   either match x3 or x4. So how to communicate
+   that is tricky. *)
+
+(* Prove that the sets of sum and prod are communitive!!!!! *) 
+
+(* ERROR : cannot guess decreasing argument of fix *)
+
+(*Fixpoint eq_request (r1 r2 : R_id) : bool :=
+  match r1  with
+  | R_ID (EV x1) => match r2 with
+                    | R_ID (EV x2) => if eq_term x1 x2 then true else false
+                    | _ => false
+                    end
+  | R_ID (SUM x1 x2) => match r2 with
+                        | R_ID (SUM x3 x4) => if (eq_request (R_ID x1) (R_ID x3))
+                                              then (eq_request (R_ID x2) (R_ID x4))
+                                              else false 
+                        | _ => false
+                        end 
+  | R_ID (PROD x1 x2) => match r2 with
+                         | R_ID (PROD x3 x4) => if (eq_request (R_ID x1) (R_ID x3))
+                                                then (eq_request (R_ID x2) (R_ID x4))
+                                                else false
+                         | _ => false
+                         end 
+  end. *)              
+
+Fixpoint R_find (x : R_id) (d : protocol_map) : requestoption :=
   match d with
-  | empty => None
-  | record y r d' => if eqb_id x y
-                     then Some r
-                     else find x d'
+  | R_empty => R_None
+  | R_record y r d' => if eq_request x y
+                     then R_Some r
+                     else R_find x d'
   end.
 
 (* to match the map option, we must, for now, just say the request is some
    natural number. *)
-
-
-
-Fixpoint evalrequest (r : request) : proposal :=
-  match r with
-  | EV r1 => [r1]
-  | SUM r1 r2 => 
-  end.
 
 (* How does request shape into the list?? *)
 
