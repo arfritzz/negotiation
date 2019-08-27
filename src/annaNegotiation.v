@@ -248,9 +248,15 @@ Compute eq_term (KIM 3) (USM 3).
 Fixpoint eq_request (r1 r2 : R_id) : bool :=
   match r1, r2 with
   | R_ID (EV x1) , R_ID (EV x2) => if eq_term x1 x2 then true else false
-  | R_ID (SUM x1 x2) , R_ID (SUM x3 x4) => false (* if eq_request (R_ID x1) (R_ID x3)
-                                           then true (* eq_request (R_ID x2) (R_ID x4)*)
-                                           else false *)
+  | R_ID (SUM x1 x2) , R_ID (SUM x3 x4) => if (eq_request (R_ID x1) (R_ID x3))
+                                           then true
+                                           else if (eq_request (R_ID x1) (R_ID x4))
+                                                  then true
+                                                  else if (eq_request (R_ID x2) (R_ID x3))
+                                                       then true
+                                                       else if (eq_request (R_ID x2) (R_ID x4))
+                                                         then true
+                                                         else false
   | R_ID (PROD x1 x2), R_ID (PROD x3 x4) => false (* if eq_request (R_ID x1) (R_ID x3)
                                             then true (* eq_request (R_ID x2) (R_ID x4)*)
                                             else false *)
