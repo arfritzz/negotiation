@@ -24,15 +24,10 @@
 
 \newcommand{\squash}{\itemsep=0pt\parskip=0pt}
 \newcommand{\terms}[0]{\cnc{\emph{t}} }
-% \newcommand{\pl}[0]{\cnc{\emph{P}}}
 \newcommand{\req}[0]{\cnc{\emph{R}}}
-% \newcommand{\hash}[1]{\cnc{\##1}}
 \newcommand{\nonce}[1]{\cnc{NONCE_{#1}}}
-% \newcommand{\place}[1]{\cnc{pl_#1}}
-\newcommand{\vals}[0]{\cnc{\emph{e}}}
-% \newcommand{\terms}[0]{\cnc{\emph{t}}}
+\newcommand{\vals}[0]{\cnc{\emph{e}}}}
 \newcommand{\proposal}[0]{$\langle p_0,p_1,\ldots,p_n\rangle$}
-% \newcommand{\at}[2]{\mathop{@_{#1}}{#2}}
 \newcommand{\bara}[0]{$\mathit{\bar{a}}$}
 
 \parskip=\medskipamount
@@ -56,11 +51,9 @@
 
 \chapter{Current Focus}
 
-Writing a working example to abstract.
+Thinking about situational awareness
 
 Monad to describe the shape of the protocol? 
-
-Circumstances?
 
 Layered attestation paper to learn what measures what and system 
 capabilities. 
@@ -849,13 +842,21 @@ The next thing that occurs is the appraiser must send a request.
 For simplicity, lets say the request is a hash of the virus checker. In
 copland, this term would look like:
 
-@_{p}\mathsf{USM} \bara
+\req $=$ @_{p}\mathsf{USM} \bara
 
-where \bara  is a \hsh{virus checker}
+where $\bara$  is a  $\hsh{virus checker}$
+so $\req$ $=$ $@_{p}\mathsf{USM}$ $\hsh{virus checker}$
 
-The resulting proposal could then include the following options:
+The resulting proposal could then include three options where the first
+is a hash of the virus checker, the second is a hash of the virus checker
+and a hash of the signature file, and the third option is a hash of the
+virus chekcer, a hash of the signature file, and a hash of another piece
+of evidence (some component of the network communication). 
+
+The resulting proposal \proposal could then include the following options:
 
 \begin{enumerate}
+  \squash
 \item Target hashes the virus checker, signs the hash, then sends the
   whole thing back
 \item Target can hash the signature file and hash the virus checker
@@ -865,8 +866,24 @@ The resulting proposal could then include the following options:
   connection
 \end{enumerate}
 
+or: 
+
+\begin{itemize}
+  \squash
+\item p_0 $=$ \mathsf{USM} \hsh{virus checker}
+\item p_1 $=$ \mathsf{USM} {\hsh{virus checker}, \hsh {signature file}}
+\item p_2 $=$ \mathsf{USM} {\hsh{virus checker}, \hsh {signature file}}, additional
+  evidence
+\end{itemize}
+
+
 The proposal is then sent through the privacy policy to ensure that
-all options are in alignment with the target's standards. 
+all options are in alignment with the target's standards.
+
+Then selection procedure is based on situational awareness. Becuase the
+situation mandates a response in the shortest amout of time, p_0 will be
+favorable. Therefore,\mathsf{USM} \hsh{virus checker} is choosen as the
+given protocol to be sent to the attestation manager.
 
 The appraiser then applies the notion of 'best' to the proposal to obtain
 the first protocol as the one sent through attestation.
