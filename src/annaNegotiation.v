@@ -33,6 +33,8 @@ Inductive SA : Type :=
 | One (p1 : SA_param)
 | More (p1 p2 : SA).
 
+(* I identified each SA by a natural number *) 
+
 Inductive SA_id : Type :=
 | SA_ID (n : nat).
 
