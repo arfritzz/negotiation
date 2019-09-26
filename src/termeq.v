@@ -67,20 +67,82 @@ Qed.
 Theorem teq_sym : forall t1 t2:term,
     teqR t1 t2 -> teqR t2 t1.
 Proof.
-  induction t1; intros.
-  - destruct t2. apply E_KIM.
-    inversion H. rewrite <- H2. reflexivity.
-  - apply E_USM. reflexivity.
+  induction t1; destruct t2; intros; inversion H.
+  - apply E_KIM. rewrite <- H2. reflexivity.
+  - apply E_USM. rewrite <- H2. reflexivity.
   - apply E_AT.
-    -- reflexivity.
-    -- apply IHt1.
+    -- rewrite <- H3. reflexivity.
+    -- apply IHt1.  apply H5. 
   - apply E_SEQ.
-    -- apply IHt1_1.
-    -- apply IHt1_2.
+    -- specialize IHt1_1 with t2_1. apply IHt1_1. apply H3.
+    -- specialize IHt1_2 with t2_2. apply IHt1_2. apply H5. 
   - apply E_PAR1.
-    -- apply IHt1_1.
-    -- apply IHt1_2.
+    -- specialize IHt1_1 with t2_1. apply IHt1_1. apply H3.
+    -- specialize IHt1_2 with t2_2. apply IHt1_2. apply H5.
+  - apply E_PAR2.
+    -- specialize IHt1_2 with t2_1. apply IHt1_2. apply H5.
+    -- specialize IHt1_1 with t2_2. apply IHt1_1. apply H3.
   - apply E_SIG.
-    -- apply IHt1.
+    -- apply IHt1. apply H2.
 Qed.
+
+Theorem teq_sym2 : forall t1 t2:term,
+    teqR t1 t2 = teqR t2 t1.
+Proof.
+  induction t1.
+  - destruct t2. intros. 
+    (* apply E_KIM. *)
+Admitted.
+
+Theorem teq_trans : forall t1 t2 t3 : term,
+    teqR t1 t2 -> teqR t2 t3 -> teqR t1 t3.
+Proof.
+  induction t1; destruct t2; destruct t3; intros; inversion H; inversion H0.
+  - apply E_KIM. rewrite -> H3. apply H6.
+  - apply E_USM. rewrite -> H3. apply H6.
+  - apply E_AT.
+    -- rewrite -> H4. apply H10.
+    -- specialize IHt1 with t2 t3. apply IHt1.
+       --- apply H6.
+       --- apply H12.
+  - apply E_SEQ.
+    -- specialize IHt1_1 with t2_1 t3_1. apply IHt1_1.
+       --- apply H4.
+       --- apply H10.
+    -- specialize IHt1_2 with t2_2 t3_2. apply IHt1_2.
+       --- apply H6.
+       --- apply H12.
+  - apply E_PAR1.
+    --  specialize IHt1_1 with t2_1 t3_1. apply IHt1_1.
+       --- apply H4.
+       --- apply H10.
+    -- specialize IHt1_2 with t2_2 t3_2. apply IHt1_2.
+       --- apply H6.
+       --- apply H12.
+  - apply E_PAR2.
+    --  specialize IHt1_1 with t2_1 t3_2. apply IHt1_1.
+       --- apply H4.
+       --- apply H10.
+    -- specialize IHt1_2 with t2_2 t3_1. apply IHt1_2.
+       --- apply H6.
+       --- apply H12.
+  - apply E_PAR2.
+     --  specialize IHt1_1 with t2_2 t3_2. apply IHt1_1.
+       --- apply H4.
+       --- apply H12.
+    -- specialize IHt1_2 with t2_1 t3_1. apply IHt1_2.
+       --- apply H6.
+       --- apply H10.
+  - apply E_PAR1.
+    -- specialize IHt1_1 with t2_2 t3_1. apply IHt1_1.
+       --- apply H4.
+       --- apply H12.
+    -- specialize IHt1_2 with t2_1 t3_2. apply IHt1_2.
+       --- apply H6.
+       --- apply H10. 
+  - apply E_SIG. specialize IHt1 with t2 t3. apply IHt1.
+    -- apply H3.
+    -- apply H6.
+Qed.
+
 

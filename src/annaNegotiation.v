@@ -218,7 +218,154 @@ Check request.
 Definition conditional_eq {A} (x y : A) := x = y.
 Check conditional_eq.
 
+Fixpoint eqb (n m : nat) : bool :=
+  match n with
+  | O => match m with
+         | O => true
+         | S m' => false
+         end
+  | S n' => match m with
+            | O => false
+            | S m' => eqb n' m'
+            end
+  end.
+
+Fixpoint eq_list (l1 l2 : list nat) : bool :=
+match l1, l2 with 
+| nil , nil => true
+| _ , nil => false
+| nil , _ => false
+| h1 :: t1 , h2 :: t2 => match eqb h1 h2 with 
+                         | true => eq_list t1 t2
+                         | false => false
+                         end
+end.
+
+                                             
+
 (* Definition eq_request (r1 r2 : request) := forall a : term , In a r1 <-> In a r2. *)
+
+Locate "=".
+Print eq.
+
+(* Inductive eq (A : Type) (x : A) : A -> Prop :=
+  eq_refl : x = x. *)
+
+Print eq_refl.
+
+Compute eq 5 5.
+Compute eq 5 6.
+
+Inductive termeq : Type :=
+| TTrue : termeq
+| TFalse : termeq
+| TEq : term -> term -> termeq.
+
+(* For evaluating the terms, we only care if the 
+  pieces are equal. I guess making it in a list
+  is fine, just have to be able to prove that
+  two terms are equal. *)
+
+(* Im not 100% sure that this definition
+   of teval is correct since combining 
+   lists is not the correct way hmm *)
+
+Inductive tevalR : term -> list nat -> Prop :=
+| E_KIM (n1 :nat):
+    tevalR (KIM n1) (n1 :: nil)
+| E_USM (n1:nat):
+    tevalR (USM n1) (n1 :: nil)
+| E_AT (n1:place) (t1:term) (l1: list nat) :
+    tevalR t1 l1 ->
+    tevalR (AT n1 t1) (n1 :: l1)
+| E_SEQ (t1 t2 : term) (l1 l2 : list nat):
+    tevalR t1 l1 ->
+    tevalR t2 l2 ->
+    tevalR (SEQ t1 t2) (l1 ++ l2)
+| E_PAR (t1 t2 : term) (l1 l2 : list nat):
+    tevalR t1 l1 ->
+    tevalR t2 l2 ->
+    tevalR (PAR t1 t2) (l1 ++ l2)
+| E_SIG (t1: term) (l1: list nat):
+    tevalR t1 l1 ->
+    tevalR (SIG t1) (l1).
+
+Inductive teqR : termeq -> bool -> Prop :=
+| E_TTrue :
+    teqR (TTrue) true
+| E_TFalse :
+    teqR (TFalse) false
+| E_termeq (t1 t2 : term) (t3 t4 : list nat) :
+    tevalR t1 t3 ->
+    tevalR t2 t4 ->
+    teqR (TEq t1 t2) (eq_list t3 t4).
+
+Compute teqR (TEq (KIM 3) (KIM 3)) (true).
+
+Theorem eq_KIM_3 : teqR (TEq (KIM 3) (KIM 3)) (true).
+Proof.
+  Admitted.
+(* Inductive tevalR : term -> Set -> Prop :=
+| E_KIM (t1 : term) (n1 : nat) (S : Set) :
+    tevalR (KIM n1) t1 ->
+    tevalR In (t1) Empty_set.
+| E_USM (t1 : term) (n1 : nat):
+    tevalR (USM n1) t1
+| E_SEQ (t1 t2 : term) (t3 t4 : term):
+    tevalR t1 t3 ->
+    tevalR t2 t4 ->
+    tevalR (SEQ t1 t2) (Union t3 t4). *)
+
+Inductive reqR : Type :=
+| RTrue : reqR
+| RFalse : reqR
+| Req : request -> request -> reqR
+| Ror : request -> request -> reqR
+| Rand : request -> request -> reqR.                                
+
+Fixpoint eq_term (t1 t2 : term) : bool :=
+match t1 with
+| KIM x1 => match t2 with
+            | KIM x2 => if x1 =? x2 then true else false
+            | _ => false
+            end
+| USM x1  => match t2 with
+            | USM x2 => if x1 =? x2 then true else false
+            | _ => false
+            end
+| AT p1 x1 => match t2 with
+              | AT p2 x2 => if p1 =? p2 then eq_term x1 x2 else false
+              | _ => false
+              end
+| SEQ x1 x2 => match t2 with
+               | SEQ x3 x4 => if eq_term x1 x3 then eq_term x2 x4 else false
+               | _ => false
+               end
+| PAR x1 x2 => match t2 with
+               | PAR x3 x4 => if eq_term x1 x3 then eq_term x2 x4 else false
+               | _ => false
+               end
+| SIG x1 => match t2 with
+            | SIG x2 => eq_term x1 x2
+            | _ => false
+            end
+end.
+
+Compute eq_term (SEQ (KIM 1) (KIM 2)) (SEQ (KIM 1) (KIM 2)).
+Compute eq_term (PAR (KIM 1) (KIM 2)) (PAR (KIM 1) (KIM 2)).
+Compute eq_term (KIM 3) (KIM 3).
+Compute eq_term (KIM 3) (USM 3).
+Compute eq_term (AT 1 (KIM 2)) (AT 1 (KIM 2)).
+
+
+Inductive revalR : request -> term -> Prop :=
+| R_EV (t1 : term) :
+    revalR (EV t1) t1
+| R_SUM (t1 t2 : term):
+    revalR t1 t3 ->
+    revalR t2 t4 ->
+    revalR (SUM t1 t2) Union t3 t4.
+  
 
 Fixpoint eq_term (t1 t2 : term) : bool :=
 match t1 with
