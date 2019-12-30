@@ -18,15 +18,13 @@
 \newtheorem{obligation}{Obligation}
 \newtheorem{definition}{Definition}
 
-\usepackage[textsize=tiny]{todonotes}
-%%\usepackage{ifthen}
-% \newboolean{submission}  %%set to true for the submission version
+%% \usepackage[textsize=tiny]{todonotes}
 
 \newcommand{\squash}{\itemsep=0pt\parskip=0pt}
 \newcommand{\terms}[0]{\cnc{\emph{t}} }
 \newcommand{\req}[0]{\cnc{\emph{R}}}
 \newcommand{\nonce}[1]{\cnc{NONCE_{#1}}}
-\newcommand{\vals}[0]{\cnc{\emph{e}}}}
+\newcommand{\vals}[0]{\cnc{\emph{e}}}
 \newcommand{\proposal}[0]{$\langle p_0,p_1,\ldots,p_n\rangle$}
 \newcommand{\bara}[0]{$\mathit{\bar{a}}$}
 
@@ -101,7 +99,7 @@ To begin constructing the language, there are basic things we must implement.
 	\item This is useful for the Privacy Policy to decide what terms can
           be shared. 
 	\item A Proposal will be composed of a list of terms from the target
-          to the appraiser.
+         to the appraiser.
 	\item I suppose when we go to define an ordering to establish a meet
           and join we will order the terms. This seems like a natural place
           to establish ordering. 
@@ -880,11 +878,9 @@ The next thing that occurs is the appraiser must send a request.
 For simplicity, lets say the request is a hash of the virus checker. In
 copland, this term would look like:
 
-\req $=$ @_{p}\mathsf{USM} \bara
+\req = USM \bara
 
-where $\bara$  is a  $\hsh{virus checker}$
-so $\req$ $=$ $@_{p}\mathsf{USM}$ $\hsh{virus checker}$
-
+where \bara is a $\hsh{virus checker}$.
 The resulting proposal could then include three options where the first
 is a hash of the virus checker, the second is a hash of the virus checker
 and a hash of the signature file, and the third option is a hash of the
@@ -907,10 +903,9 @@ The resulting proposal \proposal could then include the following options:
 or: 
 
 \begin{itemize}
-  \squash
-\item p_0 $=$ \mathsf{USM} \hsh{virus checker}
-\item p_1 $=$ \mathsf{USM} {\hsh{virus checker}, \hsh {signature file}}
-\item p_2 $=$ \mathsf{USM} {\hsh{virus checker}, \hsh {signature file}}, additional
+\item $p_0$ $=$ USM $\hsh{virus checker}$
+\item $p_1$ $=$ USM {$\hsh{virus checker}$, $\hsh{signature file}$}
+\item $p_2$ $=$ USM {$\hsh{virus checker}$, $\hsh{signature file}$}, additional
   evidence
 \end{itemize}
 
@@ -919,8 +914,8 @@ The proposal is then sent through the privacy policy to ensure that
 all options are in alignment with the target's standards.
 
 Then selection procedure is based on situational awareness. Becuase the
-situation mandates a response in the shortest amout of time, p_0 will be
-favorable. Therefore,\mathsf{USM} \hsh{virus checker} is choosen as the
+situation mandates a response in the shortest amout of time, $p_0$ will be
+favorable. Therefore,USM \hsh{virus checker} is choosen as the
 given protocol to be sent to the attestation manager.
 
 The appraiser then applies the notion of 'best' to the proposal to obtain
