@@ -748,35 +748,15 @@ involves the hardware implementations.
 \section{Relational Definition vs Functional Definition}
 
 Although in some cases functional and relational definitions accomplish
-the same goals, there are differences between the implimentation of the
-two with benefits for defining the language in either way. 
-Functional definitions produce whatever value is desired (ie a number).
-A way to think about relational definitions is as simple as thinking about
-a relation between expression and their values. Relational definitions produce
-a Prop. However, it may be useful to prove that the two definitions are
-equal?
+the same goals, there are differences between what the implementation of 
+either can allow. Relational definitions will be used throughout this formal
+verification, whenever applicable, to develop a proof statement. 
 
-Things that are inhearent to functional definitions:
+\section{Input Syntax}
 
-\begin{itemize}
-  \squash
-\item Fixpoint
-\item Match
-\end{itemize}
-
-Things that are inhearent to relational definitions:
-
-\begin{itemize}
-  \squash
-\item Inductive
-\item Would return a proposition
-\end{itemize}
-
-\section{Request}
-
-The request, as previously mentioned, can contain one item, a sum of
-items or a product of items. With that, I think we must prove things
-about properties of the request.
+The input into the formal negotiation procedure is a request from the appraiser. 
+The request, as previously mentioned, can contain one term, a sum (OR) of
+items or a product (AND) of term. 
 
 \begin{itemize}
 \item Commutative $ a + b = b + a $
@@ -793,9 +773,38 @@ about properties of the request.
 Overall, the goal of Copland, and the result of negotiation is preforming
 layered attestations which provides
 an appraiser with evidence about the integrity of a target. In order to obtain
-a protocol from negotiation, however, a notition of "best" protocol must
+a protocol from negotiation, however, a notation of "best" protocol must
 be implemented. The "best" protocol will be discovered by ordering the
 possible evidence values that can arise from processing the protocols. 
+
+\section{Equality of Terms/Requests}
+
+In order to implement a dictionary definition of the negotiation procedure, 
+one must be able to compare terms to know if the entry already exists
+in the dictionary. One way to do this is to compare each term and its 
+dependencies. If the dependencies are equal, then the terms must be equal. 
+
+
+\section{Formal Definitions}
+
+\textbf{Definition (Set)}
+A set is a collection of well defined distinct objects.
+
+\textbf{Definition (Lattice)}
+A set is a collection of well defined distinct objects.
+
+
+
+\textbf{Definition (Term)}
+
+\textbf{Definition (Request)}
+A request is a set of terms. The mapping of request to proposal is 
+defined as a lattice. 
+
+\textbf{Definition (Equality of Terms)}
+Let A and B be terms in the language such that A(x) = B(y) iff x = y and A = B. 
+
+\textbf{Definition (Evaluation of Terms)}
 
 \subsection{The Shape of Evidence}
 
