@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{glossaries}
+
+\makeglossaries
+
+%% related to attestation 
+\newglossaryentry{Evidence} {
+  name={Evidence},
+  description={Measurements of a system to ensure
+    integrity. Measurements can be used to ensure that the correct
+    software/ hardware is used or that the state of the system is
+    valid.}
+}
+
+
+\newglossaryentry{Events}
+{
+  name={Events},
+  description= {Observable effects associated with phrase execution}
+}  
+
+\newglossaryentry{Remote Attestation}
+{
+  name={Remote Attestation},
+  description={Consists of generating evidence of a system's integrity
+	      via measurements, and reporting the evidence to a 
+	      remove party for appraisal}
+}
+
+\newglossaryentry{Terms/Phrases}
+{
+  name={Terms/Phrases},
+  description={Copland programs that are built from a small set 
+	      of operators designed to orchestrate the activities
+	      of measurement agents across several layers of a 
+	      target system}
+}
+
+\newglossaryentry{hashes}
+{
+  name={Cryptographic Hashes},
+  description={a type of evidence that can inform integright evaluation. One can take a hash of executables or other files used during platform operation}
+}
+
+\newglossaryentry{Semantic Explicitness}
+{
+  name={Semantic Explicitness},
+  description={A priniple of remote attestation that addresses the degree that measurement data contains the necessary evidence required for a trust decision}
+}
+
+\newglossaryentry{authenticity}
+{
+  name={Authenticity},
+  description={A Maat property that ensures evidence is from the requested source and relects target's state}
+}
+
+\newglossaryentry{correctness}
+{
+  name={Correctness},
+  description={A Maat property that addresses sound design and correct implementation}
+}
+
+\newglossaryentry{protection}
+{
+  name={Protection},
+  description={a Maat property that addresses the ability M$&$A components to meet thier trust obligations}
+}
+
+\newglossaryentry{APB}
+{
+  name={APB (Attestation Protocol Block)},
+  description={Attestation Protocol Blocks understand the requirements of a particular attestation situation. Can produce or evaluate measuement. Simply, it is the protocol used to collect and transmit evidence}
+}
+
+\newglossaryentry{ASP}
+{
+  name={ASP (Attestation Service Provider)},
+  description={In Maat, these are descrete functional units. They perform a specific, discrete function in evidence collection}
+}
+
+%% related to negotiation
+\newglossaryentry{Ideal}{%
+  name={Ideal},
+  description={The target gives all possible information about it's system}
+}
+
+\newglossaryentry{Perfect}{%
+  name={Perfect},
+  description={The target fulfills the appraiser's exact request}
+}
+
+\newglossaryentry{Intersection Poset}{%
+  name={Intersection Poset},
+  description={The intersection of a the target's proposal
+    the the appriaser request}
+}
+
+\newglossaryentry{Domain/Domain of Interpretation}{%
+  name={Domain},
+  description={The context in which the security association was established}
+}
+
+\newglossaryentry{Selection Policy}{%
+  name={Selection Policy},
+  description={The appraiser's guidelines that are followed to decide which protocol to select for attestation}
+}
+
+\newglossaryentry{Negotiation Policy}{%
+  name={Negotiation Policy},
+  description={Is this a thing?}
+}
+
+\newglossaryentry{Local Policy}{%
+  name={Local Policy},
+  description={The situationally dependent needs of the appraiser or the target}
+}
+
+\newglossaryentry{Privacy Policy}{%
+  name={Privacy Policy},
+  description={Controls how much information the target or appraiser is willing to expose}
+}
+
+\newglossaryentry{Target}{%
+  name={Target},
+  description={The system to be evaluated for a trust decision}
+}
+
+\newglossaryentry{Appraiser}{%
+  name={Appriser},
+  description={The system that desires the trust decision}
+}
+  
+
+
+\begin{document}
+
+\printglossaries
+\glsaddallunused
+
+\end{document}

@@ -1,0 +1,7 @@
+This is makeindex, version 2.15 [TeX Live 2019] (kpathsea + Thai support).
+Scanning style file ./glossary.ist.............................done (29 attributes redefined, 0 ignored).
+Scanning input file glossary.glo....done (21 entries accepted, 0 rejected).
+Sorting entries....done (102 comparisons).
+Generating output file glossary.gls....done (56 lines written, 0 warnings).
+Output written in glossary.gls.
+Transcript written in glossary.glg.

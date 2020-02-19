@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{glossaries}
+
+\makeglossaries
+
+
+\newglossaryentry{y}
+{
+  name={},
+  description={}
+}
+
+
+\newglossaryentry{Events}
+{
+  name={Events},
+  description= {Observable effects associated with phrase execution}
+}  
+
+\newglossaryentry{Remote Attestation}
+{
+  name={Remote Attestation},
+  description={Consists of generating evidence of a system's integrity
+	      via measurements, and reporting the evidence to a 
+	      remove party for appraisal}
+}
+
+\newglossaryentry{Terms/Phrases}
+{
+  name={Terms/Phrases},
+  description={Copland programs that are built from a small set 
+	      of operators designed to orchestrate the activities
+	      of measurement agents across several layers of a 
+	      target system}
+}
+          
+
+
+\begin{document}
+
+\printglossaries
+
+\end{document}

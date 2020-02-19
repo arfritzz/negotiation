@@ -1,0 +1,56 @@
+\glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
+\begin{theglossary}\glossaryheader
+\glsgroupheading{A}\relax \glsresetentrylist %
+\glossentry{APB}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Appraiser}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{ASP}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{authenticity}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{C}\relax \glsresetentrylist %
+\glossentry{correctness}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{hashes}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{D}\relax \glsresetentrylist %
+\glossentry{Domain/Domain of Interpretation}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{E}\relax \glsresetentrylist %
+\glossentry{Events}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Evidence}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{I}\relax \glsresetentrylist %
+\glossentry{Ideal}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Intersection Poset}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{L}\relax \glsresetentrylist %
+\glossentry{Local Policy}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{N}\relax \glsresetentrylist %
+\glossentry{Negotiation Policy}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{P}\relax \glsresetentrylist %
+\glossentry{Perfect}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Privacy Policy}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{protection}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{R}\relax \glsresetentrylist %
+\glossentry{Remote Attestation}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{S}\relax \glsresetentrylist %
+\glossentry{Selection Policy}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Semantic Explicitness}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}\glsgroupskip
+\glsgroupheading{T}\relax \glsresetentrylist %
+\glossentry{Target}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\glossentry{Terms/Phrases}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsignore{2}}}%
+\end{theglossary}\glossarypostamble
