@@ -1,0 +1,9 @@
+\usetikzlibrary{trees}
+
+\begin{tikzpicture}
+    \node {R = meas A}
+        child {node {C}}
+        child {node {D}}
+        child {node {E}
+        };
+\end{tikzpicture}  
