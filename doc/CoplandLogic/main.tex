@@ -29,6 +29,10 @@ In order to arrange protocols with some ordering, we must analyze them. Mitre ha
 
 
 \begin{itemize}
+    \item From proposition to program 
+    \begin{itemize}
+        \item perhaps the notion of a refinement tree comes from the idea of the refinement calculus. 
+    \end{itemize}
     \item CPSA 
     \begin{itemize}
         \item Cryptographic Protocol Shapes Analyzer (CPSA) automatically characterizes the possible executions of a protocols
@@ -63,6 +67,13 @@ In order to arrange protocols with some ordering, we must analyze them. Mitre ha
         \item When looking to analyze protocols, one starts with an initial set, a singleton set. 
         \item The author's use a homomorphism to map nodes of one peer $A_0$ to another $A_1$. This is useful as $A_1$ may provide additional details about $A_0$.
         \item They also introduce a \textbf{skeleton} which consists of a finite set of nodes, a partial order over the nodes where the order reflects precedence, key, and atomic values.   
+    \end{itemize}
+    \item Refinement trees: calculi, tools, and applications
+    \begin{itemize}
+        \item "The classical theory of refinement provides the means for vertically decomposing this task into a sequence of refinement steps" 
+        \item $SP \Rightarrow SP_1 \Rightarrow SP_2 .... \Rightarrow P$
+        \item where P is the implementation or the model and the steps \\ $SP_1, SP_2....$ are intermediate specifications
+        \item So, you take some sort of steps 
     \end{itemize}
 \end{itemize}
 

@@ -1,9 +1,20 @@
 \usetikzlibrary{trees}
+\usetikzlibrary{arrows}
 
-\begin{tikzpicture}
-    \node {R = meas A}
-        child {node {C}}
-        child {node {D}}
-        child {node {E}
+\begin{tikzpicture}[edge from parent/.style={draw,-latex}]
+
+    \tikzstyle{level 1}=[level distance=40mm]
+
+    \node[circle,draw]  {measure target} [sibling distance = 5cm]
+        child {node[circle,draw]  {measure vc}
+            child {node[circle,draw] {hash vc}
+                child {node[circle,draw] (2) {hash vc + sf}
+                    child {node[circle,draw]  {hash vc + sf +ss}}
+                }
+            }
+            child {node[circle,draw] (1) {hash sf}}
+            }
+        child {node[circle,draw]  {measure OS}
         };
+        \draw[->](1)--(2);
 \end{tikzpicture}  
