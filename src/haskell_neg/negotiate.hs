@@ -10,8 +10,8 @@
 data Protocol = 
       CPY
     | SIG 
-    | HSH 
-
+    | HSH
+    deriving (Show)
 
 data Negotiate = Negotiate {  request :: Protocol
                             , proposal :: [Protocol]
@@ -34,3 +34,11 @@ neg_a :: [Protocol] -> Maybe Protocol
 neg_a p = case p of 
     [] -> Nothing 
     (x:_) -> Just x 
+
+{- Now to combine into one negotiate function -}
+
+negotiate :: request -> Maybe Protocol
+negotiate r = 
+    let proposal = neg_t r
+        prot = neg_a proposal
+    in prot
