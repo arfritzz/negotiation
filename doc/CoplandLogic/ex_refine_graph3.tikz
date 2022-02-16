@@ -1,0 +1,18 @@
+\usetikzlibrary{trees}
+\usetikzlibrary{arrows}
+
+\begin{tikzpicture}[edge from parent/.style={draw,-latex}]
+
+    \tikzstyle{level 1}=[level distance=40mm]
+
+    \node[circle,draw]  {measure target} [sibling distance = 5cm]
+        child {node[circle,draw]  {measure vc}
+            child {node[circle,draw] (1) {hash vc}}
+            child {node[circle,draw] (2) {hash sf}}
+            child {node[circle,draw] (3) {hash ss}}
+        }
+        child {node[circle,draw]  {measure OS}
+        };
+        \draw[->](1) -- (2)
+        \draw[->](2) -- (3)
+\end{tikzpicture}  
